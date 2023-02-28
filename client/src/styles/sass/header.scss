@@ -1,0 +1,13 @@
+header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  button {
+    padding: 14px 30px;
+    font-size: 20px;
+    border-radius: 50px;
+    background-color: var(--bg);
+    color: var(--text-color);
+    margin-top: 20px;
+  }
+}

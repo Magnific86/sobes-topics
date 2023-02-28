@@ -1,0 +1,15 @@
+.mainSearch {
+  margin-top: 20px;
+  input {
+    width: 70%;
+    padding: 40px;
+    font-size: 40px;
+    color: var(--black);
+    background-color: transparent;
+    border: none;
+    border-bottom: 3px solid var(--black);
+    text-align: left;
+    outline: none;
+    margin: 0 auto;
+  }
+}

@@ -1,0 +1,53 @@
+.ant-modal .ant-modal-content {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+.ant-modal .ant-modal-title {
+  display: none !important;
+}
+.ant-modal .ant-modal-header {
+  display: none !important;
+}
+.ant-modal .ant-modal-close-x {
+  span {
+    svg {
+      display: none !important;
+    }
+  }
+}
+.feedbackForm {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: var(--black);
+  background-color: var(--bg);
+  border-radius: 20px;
+  padding: 0 !important;
+  label {
+    font-size: 30px;
+    padding: 20px;
+  }
+  input {
+    background-color: transparent;
+    padding: 20px;
+    font-size: 20px;
+    outline: none;
+    border: none;
+    border-width: 0;
+    box-shadow: none;
+    color: var(--black);
+    border-bottom: 2px solid var(--black);
+  }
+  button {
+    padding: 14px 60px;
+    font-size: 40px;
+    text-align: center;
+    margin: 30px 0;
+    border-radius: 50px;
+  }
+}
+
+.drawerContent {
+  display: flex;
+}
