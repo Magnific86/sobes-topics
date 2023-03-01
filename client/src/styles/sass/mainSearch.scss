@@ -1,9 +1,25 @@
 .mainSearch {
+  width: 80%;
   margin-top: 20px;
-  input {
-    width: 70%;
-    padding: 40px;
-    font-size: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  gap: 20px;
+  // background-color: #fff;
+
+  .anticon .anticon-search {
+    width: 30%;
+    display: none;
+  }
+
+  .visibleInput {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    font-size: 24px;
     color: var(--black);
     background-color: transparent;
     border: none;
@@ -11,5 +27,6 @@
     text-align: left;
     outline: none;
     margin: 0 auto;
+    border-radius: 20px;
   }
 }

@@ -20,7 +20,7 @@ class PostController {
     try {
       const posts = await PostService.getAll();
       return res.json({
-        message: "all posts",
+        message: "All posts",
         body: posts,
       });
     } catch (e) {
@@ -33,10 +33,22 @@ class PostController {
 
   async getOne(req, res) {
     try {
-      const post = await PostService.getOne(req.params.id);
+      const post = await PostService.getOne(req.params.question);
       return res.json({
-        message: `get one post with id: ${req.params.id}`,
+        message: `get one post with id: ${req.params.question}`,
         body: post,
+      });
+    } catch (e) {
+      res.status(500).json(e);
+    }
+  }
+
+  async getChoosenCateg(req, res) {
+    try {
+      const posts = await PostService.findCateg(req.params.category);
+      return res.json({
+        message: `All posts in ${req.params.category}`,
+        body: posts,
       });
     } catch (e) {
       res.status(500).json(e);

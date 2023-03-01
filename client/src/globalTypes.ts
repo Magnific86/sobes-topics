@@ -1,11 +1,13 @@
 import { ReactNode } from "react";
 
 export interface ChildrenProps {
-    children: ReactNode;
-  }
+  children: ReactNode;
+}
 
-  export interface IPost {
-    question: string
-    answer: string
-    timeCreated: string
-  }
+export interface IPost {
+  _id: string;
+  question: string;
+  answer: string;
+  category: string;
+  timeCreated: string;
+}

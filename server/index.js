@@ -21,7 +21,7 @@ mongoose.set("strictQuery", false);
 
 const startApp = async () => {
   try {
-    await mongoose.connect("mongodb://localhost:27017");
+    await mongoose.connect(MONGO_DB_URL);
     app.listen(PORT, () => {
       console.log("SERVER STARTED ON PORT: ", PORT);
     });

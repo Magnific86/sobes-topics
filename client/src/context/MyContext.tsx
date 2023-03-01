@@ -1,6 +1,7 @@
 import { createContext, FC, useState, useContext, useEffect } from "react";
 import { ChildrenProps, IPost } from "../globalTypes";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 interface ContextState {
   theme: string;
@@ -12,8 +13,15 @@ interface ContextState {
   openModal: boolean;
   setOpenModal: (state: boolean) => void;
   handleToggleModal: () => void;
-  posts: any;
-  setPosts: (state: any) => void;
+  buttonContent: string;
+  setButtonContent: (str: string) => void;
+  isAdmin: boolean;
+  setIsAdmin: (state: boolean) => void;
+  allPosts: IPost[];
+  getAllPosts: () => void;
+  openInfoDrawer: boolean;
+  handleToggleInfoDrawer: () => void;
+  setAllPosts: (posts: any) => void;
 }
 
 const MyContext = createContext<ContextState>(null);
@@ -23,28 +31,29 @@ const AppProvider = MyContext.Provider;
 export const MainProvider: FC<ChildrenProps> = ({ children }) => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [openModal, setOpenModal] = useState(false);
-  const [posts, setPosts] = useState(() => {
-    (async () => {
-      try {
-        const data = await axios.get(
-          "http://localhost:5000/api/posts" //https://eu-central-1.aws.data.mongodb-api.com/app/data-opjow/endpoint/data/v1
-        );
-        // const data = await resp.json();
-        console.log("MFOSENGJPERNBDRPIBNDPBNFPBNF", data.data);
-        if (data) {
-          setPosts(data.data);
-        }
-      } catch (e) {
-        console.error("MFOSENGJPERNBDRPIBNDPBNFPBNF", e);
-      }
-    })();
-  });
+  const [openInfoDrawer, setOpenInfoDrawer] = useState(false);
+  const [buttonContent, setButtonContent] = useState("post");
+  const [isAdmin, setIsAdmin] = useState(true);
+  const [allPosts, setAllPosts] = useState();
 
-  // console.log("WHAT IN POSTS AFTER FETCH", posts);
+  const getAllPosts = async () => {
+    try {
+      const data = await axios.get(`http://localhost:5000/api/posts`);
+      console.log("Post list updated", data.data.body);
+      setAllPosts(data.data.body);
+    } catch (e) {
+      toast.error("failed to update post list", e?.message);
+      console.error("failed to update post list", e);
+    }
+  };
 
   const [theme, setTheme] = useState(() =>
     JSON.parse(localStorage.getItem("theme"))
   );
+
+  const handleToggleInfoDrawer = () => {
+    setOpenInfoDrawer(openInfoDrawer ? false : true);
+  };
 
   const handleToggleModal = () => {
     setOpenModal(openModal ? false : true);
@@ -76,8 +85,15 @@ export const MainProvider: FC<ChildrenProps> = ({ children }) => {
         openModal,
         handleToggleModal,
         setOpenModal,
-        posts,
-        setPosts,
+        buttonContent,
+        setButtonContent,
+        isAdmin,
+        setIsAdmin,
+        allPosts,
+        getAllPosts,
+        openInfoDrawer,
+        handleToggleInfoDrawer,
+        setAllPosts,
       }}
     >
       {children}

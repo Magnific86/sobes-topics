@@ -24,13 +24,14 @@
   background-color: var(--bg);
   border-radius: 20px;
   padding: 0 !important;
+  padding-top: 10px !important;
   label {
-    font-size: 30px;
-    padding: 20px;
+    font-size: 24px;
+    padding: 16px;
   }
   input {
     background-color: transparent;
-    padding: 20px;
+    padding: 16px;
     font-size: 20px;
     outline: none;
     border: none;
@@ -40,14 +41,25 @@
     border-bottom: 2px solid var(--black);
   }
   button {
-    padding: 14px 60px;
-    font-size: 40px;
+    padding: 14px 80px;
+    font-size: 36px;
     text-align: center;
     margin: 30px 0;
     border-radius: 50px;
   }
+  .rate {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    // background-color: antiquewhite;
+    p {
+      font-size: 20px;
+      padding: 10px;
+    }
+  }
 }
 
-.drawerContent {
-  display: flex;
+.ant-rate .ant-rate-star-first,
+.ant-rate .ant-rate-star-second {
+  color: gray;
 }

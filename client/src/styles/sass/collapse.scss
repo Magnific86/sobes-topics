@@ -1,0 +1,21 @@
+.collapseHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 30px;
+  gap: 10px;
+  p {
+    text-align: center;
+    margin: 0 auto;
+  }
+  .options {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-right: 20px;
+    button {
+      border-radius: 30px;
+      padding: 10px;
+    }
+  }
+}

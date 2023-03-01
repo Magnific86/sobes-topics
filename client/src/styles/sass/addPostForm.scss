@@ -4,11 +4,18 @@
   .drawerContent {
     display: flex;
     justify-content: space-around;
+    flex-direction: column;
+
     .leftSideDrawer {
-      width: 40%;
+      width: 80%;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 25px;
     }
     .addPostForm {
-      width: 40%;
+      width: 80%;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -18,6 +25,21 @@
       border-radius: 20px;
       padding: 0 !important;
       border: 2px solid var(--black);
+      margin: 0 auto;
+
+      .error-form {
+        padding-top: 30px;
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 16px;
+        /* identical to box height, or 80% */
+        opacity: 0;
+        transition: 0.3s;
+        letter-spacing: 0.04em;
+        color: #ff0000;
+        text-shadow: 20px 0px 40px #ff0000;
+      }
+
       label {
         font-size: 30px;
         padding: 20px;
@@ -52,6 +74,57 @@
         color: var(--black);
         border-bottom: 2px solid var(--black);
       }
+    }
+  }
+}
+
+.eachPost {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: var(--black);
+  font-size: 30px;
+  background-color: var(--bg);
+
+  .mainContent {
+    width: 100%;
+    height: 90%;
+    justify-content: start;
+  }
+  .timeCreated {
+    display: flex;
+    width: 100%;
+    justify-content: end;
+    height: 10%;
+    font-size: 12px;
+  }
+}
+
+.ant-collapse > .ant-collapse-item > .ant-collapse-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .ant-collapse-arrow svg {
+    color: var(--black);
+  }
+  .ant-collapse-header-text {
+    color: var(--black);
+    font-size: 28px;
+    text-align: center;
+    padding: 20px;
+  }
+}
+
+.ant-drawer .ant-drawer-close {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  width: 100%;
+  span {
+    svg {
+      color: var(--black);
+      font-size: 30px;
     }
   }
 }

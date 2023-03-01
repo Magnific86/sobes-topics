@@ -1,7 +1,9 @@
-import { Button, Modal } from "antd";
+import { Button, Modal, Rate } from "antd";
 import { FC, FormEvent, ChangeEvent, useState, useRef } from "react";
 import { useAppContext } from "../context/MyContext";
 import emailjs from "@emailjs/browser";
+import { toast } from "react-toastify";
+import { useInput } from "../utils/useInput";
 
 interface IValue {
   title: string;
@@ -11,10 +13,12 @@ interface IValue {
 }
 
 export const FeedbackForm: FC = () => {
-  const { openModal, handleToggleModal } = useAppContext();
+  const { openModal, handleToggleModal, buttonContent, setButtonContent } =
+    useAppContext();
   const [value, setValue] = useState<IValue>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const [error, setError] = useState("");
+  const [rate, setRate] = useState(0);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -22,21 +26,28 @@ export const FeedbackForm: FC = () => {
 
     try {
       // const pattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-      if (!value.title || value.text) {
+      if (!value.title || !value.text) {
         setError("Please, fill in at least title and text");
       } else {
-        emailjs.sendForm(
-          "default_service",
-          "template_my",
+        setButtonContent("posting...");
+        const data = await emailjs.sendForm(
+          "service_pqbpgjg",
+          "sobesTopicsFeedbackForm",
           formRef.current,
           "l1LBuE0jVt7xC1_kY"
         );
         setValue(null);
+        console.log("response from emailjs", data);
+        toast.success("Your feedback sended!");
       }
     } catch (e) {
       console.error(e);
+    } finally {
+      setButtonContent("post");
     }
   };
+
+  const { value: val, onChange, onBlur } = useInput("");
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const valueField = e.target.value;
@@ -44,12 +55,12 @@ export const FeedbackForm: FC = () => {
     setValue({ ...value, [name]: valueField });
   };
 
+  const desc = ["terrible", "bad", "normal", "good", "wonderful"];
+
   return (
     <Modal
-      title="Leave your feedback here"
       centered
       open={openModal}
-      // onOk={() => setOpen(false)}
       onCancel={handleToggleModal}
       width={1000}
       footer={null}
@@ -64,8 +75,26 @@ export const FeedbackForm: FC = () => {
         <label htmlFor="text">Text</label>
         <input type="text" name="text" onChange={handleChange} />
         <label htmlFor="email">email</label>
-        <input type="email" name="email" onChange={handleChange} />
-        <button>post</button>
+        <input
+          type="email"
+          name="email"
+          onChange={handleChange}
+          // onBlur={(e) => onBlur(e)}
+        />
+        <div className="rate">
+          <p>rate: </p>
+          <span>
+            <Rate tooltips={desc} onChange={setRate} value={rate} />
+            {value ? (
+              <span className="ant-rate-text">{desc[rate - 1]}</span>
+            ) : (
+              ""
+            )}
+          </span>
+          <input type="hidden" name="rate" value={rate} />
+        </div>
+
+        <button>{buttonContent}</button>
       </form>
     </Modal>
   );

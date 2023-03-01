@@ -11,12 +11,22 @@ class PostService {
     return posts;
   }
 
-  async getOne(id) {
-    if (!id) {
-      throw new Error("ID not specified");
+  async getOne(question) {
+    if (!question) {
+      throw new Error("question not specified");
     }
-    const post = await Post.findById(id);
+    const post = await Post.find(question);
     return post;
+  }
+
+  async findCateg(category) {
+    console.log("IN CATEG FUNC", category);
+    if (!category) {
+      throw new Error("category not specified");
+    }
+    const posts = await Post.find({ category: category });
+    console.log("FINDED POSTS AT CATEG", posts);
+    return posts;
   }
 
   async updatePost(post) {
