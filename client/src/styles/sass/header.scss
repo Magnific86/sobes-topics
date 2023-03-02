@@ -9,5 +9,9 @@ header {
     background-color: var(--bg);
     color: var(--text-color);
     margin-top: 20px;
+    @media screen and (max-width: 688px) {
+      font-size: 14px;
+      padding: 10px 20px;
+    }
   }
 }

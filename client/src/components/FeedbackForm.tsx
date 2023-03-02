@@ -70,6 +70,7 @@ export const FeedbackForm: FC = () => {
         ref={formRef}
         onSubmit={(e) => handleSubmit(e)}
       >
+        <h1>Если есть пожелания, критика или предложение, заполните фому</h1>
         <label htmlFor="title">Title</label>
         <input type="text" name="title" onChange={handleChange} />
         <label htmlFor="text">Text</label>

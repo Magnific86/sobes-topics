@@ -11,3 +11,12 @@ export interface IPost {
   category: string;
   timeCreated: string;
 }
+
+export interface LayoutProps {
+  children: ReactNode;
+}
+
+export interface ISocial {
+  icon: ReactNode
+  url: string
+}

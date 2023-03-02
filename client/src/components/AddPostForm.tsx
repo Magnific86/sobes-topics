@@ -1,15 +1,9 @@
-import { FormEvent, ChangeEvent, useState, useRef } from "react";
-import { Button, Drawer, Radio, Space } from "antd";
+import { FormEvent, useRef } from "react";
+import { Drawer } from "antd";
 import { useAppContext } from "../context/MyContext";
-import { IPost } from "../globalTypes";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { categories } from "../utils/categories";
-
-interface IValue {
-  question: string;
-  answer: string;
-}
 
 export const AddPostForm = () => {
   const {
@@ -19,17 +13,10 @@ export const AddPostForm = () => {
     setButtonContent,
     getAllPosts,
   } = useAppContext();
-  // const [choosenCateg, setChoosenCateg] = useState<string>("");
   const questRef = useRef<HTMLInputElement>(null);
-  const answRef = useRef<HTMLInputElement>(null);
+  const answRef = useRef<HTMLTextAreaElement>(null);
   const categRef = useRef<HTMLSelectElement>(null);
   const errRef = useRef<HTMLSpanElement>(null);
-
-  // const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-  //   const valueField = e.target.value;
-  //   const name = e.target.name;
-  //   setValue({ ...value, [name]: valueField });
-  // };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -42,7 +29,7 @@ export const AddPostForm = () => {
       const post = {
         question: String(questRef.current?.value),
         answer: String(answRef.current?.value),
-        timeCreated: String(new Date()),
+        timeCreated: String(new Date().toLocaleString()),
         category: String(categRef.current?.value),
       };
       console.table({ "ready to post to server ": post });
@@ -60,7 +47,6 @@ export const AddPostForm = () => {
       answRef.current.value = "";
       questRef.current.value = "";
       categRef.current.value = "";
-      // setChoosenCateg("");
     } else {
       errRef.current.setAttribute("style", "opacity:1");
       !questRef.current.value &&
@@ -104,23 +90,20 @@ export const AddPostForm = () => {
       <div className="drawerContent">
         <div className="leftSideDrawer">
           <h1>
-            Plaese choose category, right answer and tight question lorem lorem
+            Заполните поля вопроса и ответа, выберите категорию, и пост тут же
+            появится в списке
           </h1>
-          <p>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-          </p>
         </div>
         <form className="addPostForm" onSubmit={(e) => handleSubmit(e)}>
           <span className="error-form" ref={errRef}>
-            Fill all fields
+            Заполните все поля
           </span>
-          <label htmlFor="question">question</label>
+          <label htmlFor="question">Вопрос</label>
           <input type="text" name="question" ref={questRef} />
-          <label htmlFor="answer">answer</label>
-          <input type="text" name="answer" ref={answRef} />
+          <label htmlFor="answer">Ответ</label>
+          <textarea name="answer" ref={answRef} />
           <select ref={categRef}>
-            <option value="">Category</option>
+            <option value="">Категория</option>
             {categories.map((el) => (
               <option key={el.value} value={el.value}>
                 {el.title}

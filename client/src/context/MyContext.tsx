@@ -47,8 +47,8 @@ export const MainProvider: FC<ChildrenProps> = ({ children }) => {
     }
   };
 
-  const [theme, setTheme] = useState(() =>
-    JSON.parse(localStorage.getItem("theme"))
+  const [theme, setTheme] = useState(
+    () => JSON.parse(localStorage.getItem("theme")) || "dark"
   );
 
   const handleToggleInfoDrawer = () => {

@@ -8,7 +8,7 @@ const MONGO_DB_URL =
   "mongodb+srv://username:simple-password@mycluster.7uy4jc6.mongodb.net/?retryWrites=true&w=majority";
 
 var corsOptions = {
-  origin: "http://localhost:3000",
+  origin: "https://sobes-topics.vercel.app/",
   optionsSuccessStatus: 200,
 };
 
