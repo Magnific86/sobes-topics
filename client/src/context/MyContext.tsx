@@ -1,7 +1,6 @@
 import { createContext, FC, useState, useContext, useEffect } from "react";
 import { ChildrenProps, IPost } from "../globalTypes";
 import axios from "axios";
-import { toast } from "react-toastify";
 
 interface ContextState {
   theme: string;
@@ -22,6 +21,18 @@ interface ContextState {
   openInfoDrawer: boolean;
   handleToggleInfoDrawer: () => void;
   setAllPosts: (posts: any) => void;
+  openAdminPanel: boolean;
+  handleToggleAdminPanel: () => void;
+  openEditModal: boolean;
+  handleToggleEditModal: () => void;
+  currId: string;
+  setCurrId: (state: string) => void;
+  oldQuestion: string;
+  setOldQuestion: (state: string) => void;
+  oldAnswer: string;
+  setOldAnswer: (state: string) => void;
+  oldCateg: string;
+  setOldCateg: (state: string) => void;
 }
 
 const MyContext = createContext<ContextState>(null);
@@ -32,17 +43,22 @@ export const MainProvider: FC<ChildrenProps> = ({ children }) => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [openInfoDrawer, setOpenInfoDrawer] = useState(false);
+  const [openAdminPanel, setOpenAdminPanel] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
   const [buttonContent, setButtonContent] = useState("post");
-  const [isAdmin, setIsAdmin] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [currId, setCurrId] = useState("");
   const [allPosts, setAllPosts] = useState();
+  const [oldQuestion, setOldQuestion] = useState("");
+  const [oldAnswer, setOldAnswer] = useState("");
+  const [oldCateg, setOldCateg] = useState("");
 
   const getAllPosts = async () => {
     try {
       const data = await axios.get(`http://localhost:5000/api/posts`);
-      console.log("Post list updated", data.data.body);
+      // console.log("Post list updated", data.data.body);
       setAllPosts(data.data.body);
     } catch (e) {
-      toast.error("failed to update post list", e?.message);
       console.error("failed to update post list", e);
     }
   };
@@ -50,6 +66,14 @@ export const MainProvider: FC<ChildrenProps> = ({ children }) => {
   const [theme, setTheme] = useState(
     () => JSON.parse(localStorage.getItem("theme")) || "dark"
   );
+
+  const handleToggleEditModal = () => {
+    setOpenEditModal(openEditModal ? false : true);
+  };
+
+  const handleToggleAdminPanel = () => {
+    setOpenAdminPanel(openAdminPanel ? false : true);
+  };
 
   const handleToggleInfoDrawer = () => {
     setOpenInfoDrawer(openInfoDrawer ? false : true);
@@ -94,6 +118,18 @@ export const MainProvider: FC<ChildrenProps> = ({ children }) => {
         openInfoDrawer,
         handleToggleInfoDrawer,
         setAllPosts,
+        openAdminPanel,
+        handleToggleAdminPanel,
+        openEditModal,
+        handleToggleEditModal,
+        currId,
+        setCurrId,
+        oldQuestion,
+        setOldQuestion,
+        oldAnswer,
+        setOldAnswer,
+        oldCateg,
+        setOldCateg,
       }}
     >
       {children}

@@ -47,6 +47,7 @@ export const AddPostForm = () => {
       answRef.current.value = "";
       questRef.current.value = "";
       categRef.current.value = "";
+      handleToggleDrawer();
     } else {
       errRef.current.setAttribute("style", "opacity:1");
       !questRef.current.value &&

@@ -15,83 +15,6 @@
       margin-bottom: 25px;
       text-align: center;
     }
-    .addPostForm {
-      width: 80%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      color: var(--black);
-      background-color: var(--bg);
-      border-radius: 20px;
-      padding: 0 !important;
-      border: 2px solid var(--black);
-      margin: 0 auto;
-
-      .error-form {
-        padding: 15px 0;
-        font-weight: 600;
-        font-size: 20px;
-        opacity: 0;
-        transition: 0.3s;
-        letter-spacing: 0.04em;
-        color: #ff0000;
-        text-shadow: 20px 0px 40px #ff0000;
-      }
-
-      label {
-        font-size: 26px;
-        &:last-of-type {
-          padding-top: 20px;
-        }
-      }
-      input {
-        background-color: transparent;
-        padding: 20px;
-        font-size: 20px;
-        outline: none;
-        border: none;
-        border-width: 0;
-        box-shadow: none;
-        color: var(--black);
-        border-bottom: 2px solid var(--black);
-        width: 70%;
-      }
-      textarea {
-        background-color: transparent;
-        font-size: 20px;
-        color: var(--black);
-        width: 70%;
-        min-height: 120px;
-        border: none;
-        border-bottom: 2px solid var(--black);
-        overflow: visible;
-        outline: none;
-        -webkit-box-shadow: none;
-        -moz-box-shadow: none;
-        box-shadow: none;
-        resize: vertical;
-      }
-      button {
-        padding: 14px 60px;
-        font-size: 20px;
-        text-align: center;
-        margin: 10px 0;
-        border-radius: 50px;
-      }
-      select {
-        margin: 20px 0;
-        background-color: var(--bg);
-        padding: 20px;
-        font-size: 20px;
-        outline: none;
-        border: none;
-        border-width: 0;
-        box-shadow: none;
-        color: var(--black);
-        border-bottom: 2px solid var(--black);
-      }
-    }
   }
 }
 
@@ -143,5 +66,82 @@
       color: var(--black);
       font-size: 30px;
     }
+  }
+}
+.addPostForm {
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: var(--black);
+  background-color: var(--bg);
+  border-radius: 20px;
+  padding: 0 !important;
+  border: 2px solid var(--black);
+  margin: 0 auto;
+
+  .error-form {
+    padding: 15px 0;
+    font-weight: 600;
+    font-size: 20px;
+    opacity: 0;
+    transition: 0.3s;
+    letter-spacing: 0.04em;
+    color: #ff0000;
+    text-shadow: 20px 0px 40px #ff0000;
+  }
+
+  label {
+    font-size: 26px;
+    &:last-of-type {
+      padding-top: 20px;
+    }
+  }
+  input {
+    background-color: transparent;
+    padding: 20px;
+    font-size: 20px;
+    outline: none;
+    border: none;
+    border-width: 0;
+    box-shadow: none;
+    color: var(--black);
+    border-bottom: 2px solid var(--black);
+    width: 70%;
+  }
+  textarea {
+    background-color: transparent;
+    font-size: 20px;
+    color: var(--black);
+    width: 70%;
+    min-height: 120px;
+    border: none;
+    border-bottom: 2px solid var(--black);
+    overflow: visible;
+    outline: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    resize: vertical;
+  }
+  button {
+    padding: 14px 60px;
+    font-size: 20px;
+    text-align: center;
+    margin: 10px 0;
+    border-radius: 50px;
+  }
+  select {
+    margin: 20px 0;
+    background-color: var(--bg);
+    padding: 20px;
+    font-size: 20px;
+    outline: none;
+    border: none;
+    border-width: 0;
+    box-shadow: none;
+    color: var(--black);
+    border-bottom: 2px solid var(--black);
   }
 }

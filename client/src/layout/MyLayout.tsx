@@ -12,6 +12,9 @@ import { ISocial, LayoutProps } from "../globalTypes";
 import { FaTelegramPlane } from "@react-icons/all-files/fa/FaTelegramPlane";
 import { AiFillGithub } from "@react-icons/all-files/ai/AiFillGithub";
 import { BsEmojiSunglasses } from "react-icons/bs";
+import { GrUserAdmin } from "@react-icons/all-files/gr/GrUserAdmin";
+import { AdminPanel } from "../components/AdminPanel";
+import { EditModal } from "../components/EditModal";
 
 export const MyLayout: FC<LayoutProps> = ({ children }) => {
   const {
@@ -19,9 +22,14 @@ export const MyLayout: FC<LayoutProps> = ({ children }) => {
     handleToggleModal,
     handleToggleInfoDrawer,
     theme,
+    handleToggleAdminPanel,
+    isAdmin,
+    currId,
+    oldQuestion,
+    oldAnswer,
+    oldCateg,
   } = useAppContext();
   const { width: w } = useWindowSize();
-  console.log(w);
 
   const socials: ISocial[] = [
     {
@@ -69,6 +77,16 @@ export const MyLayout: FC<LayoutProps> = ({ children }) => {
         <button onClick={handleToggleInfoDrawer}>
           <InfoCircleOutlined style={{ fontSize: w > 689 ? "26px" : "14px" }} />
         </button>
+        {!isAdmin && (
+          <button onClick={handleToggleAdminPanel}>
+            <GrUserAdmin
+              style={{
+                fontSize: w > 689 ? "26px" : "14px",
+                color: "var(--text-color)",
+              }}
+            />
+          </button>
+        )}
       </header>
       {children}
       <footer>
@@ -87,6 +105,13 @@ export const MyLayout: FC<LayoutProps> = ({ children }) => {
       <AddPostForm />
       <FeedbackForm />
       <AboutDrawer />
+      <AdminPanel />
+      <EditModal
+        id={currId}
+        oldQuestion={oldQuestion}
+        oldAnswer={oldAnswer}
+        oldCateg={oldCateg}
+      />
     </div>
   );
 };

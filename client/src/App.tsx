@@ -1,4 +1,4 @@
-import { Collapse, Input } from "antd";
+import { Collapse } from "antd";
 import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
 import { SwiperSlide, Swiper } from "swiper/react";
 import { categories } from "./utils/categories";
@@ -9,7 +9,6 @@ import { FreeMode, Navigation, Mousewheel } from "swiper";
 import { useInView } from "react-intersection-observer";
 import axios from "axios";
 import { Post } from "./components/Post";
-import { mockArr } from "./utils/mockArr";
 import { useWindowSize } from "./utils/useWindowSize";
 import {
   SearchOutlined,
@@ -17,23 +16,35 @@ import {
   EditOutlined,
 } from "@ant-design/icons";
 import { toast } from "react-toastify";
-import { IPost } from "./globalTypes";
 import { useAppContext } from "./context/MyContext";
+import { useDebounce } from "./utils/useDebounce";
+import { IPost } from "./globalTypes";
 
 export const App: FC = () => {
   const { ref, inView } = useInView();
   const { width: w } = useWindowSize();
   const [searchTerm, setSearchTerm] = useState("");
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
+
   // const [showCount, setShowCount] = useState(0);
-  const { isAdmin, setIsAdmin, getAllPosts, allPosts, setAllPosts } =
-    useAppContext();
+  const {
+    isAdmin,
+    setIsAdmin,
+    getAllPosts,
+    allPosts,
+    setAllPosts,
+    handleToggleEditModal,
+    setOldQuestion,
+    setOldAnswer,
+    setOldCateg,
+    setCurrId,
+  } = useAppContext();
   const inpRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const prev = document.getElementsByClassName(
       "swiper-button-prev"
     )[0] as HTMLElement;
-    console.log("inView", inView);
     inView
       ? prev.setAttribute("style", "opacity:0")
       : prev.setAttribute("style", "opcity:1");
@@ -73,20 +84,7 @@ export const App: FC = () => {
     setSearchTerm(e.target.value);
   };
 
-  // const handleEditPost = async (post: IPost) => {
-  //   try {
-  //     const data = await axios.put("http://localhost:5000/api/posts", post);
-  //     console.log(data.data);
-  //     toast.success("post successfully updated");
-  //   } catch (e) {
-  //     console.error(e);
-  //     toast.error(e?.message);
-  //   } finally {
-  //     getAllPosts();
-  //   }
-  // };
-
-  let showCount = 0;
+  let regexp = new RegExp(debouncedSearchTerm, "gi");
 
   return (
     <div className="main">
@@ -129,60 +127,60 @@ export const App: FC = () => {
         ))}
       </Swiper>
       <Collapse ghost>
-        {allPosts?.length > 0 &&
-          allPosts.map(({ _id, question, answer, timeCreated }, index) => {
-            let regexp = new RegExp(searchTerm, "gi");
-            if (regexp.test(question)) {
-              showCount++;
-              return (
-                <Collapse.Panel
-                  header={
-                    <div className="collapseHeader">
-                      <p>{question}</p>
-                      {isAdmin && (
-                        <div className="options">
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleDeletePost(_id);
-                            }}
-                          >
-                            <DeleteOutlined
-                              style={{
-                                fontSize: "20px",
-                                color: "red",
+        {allPosts?.length > 0 ? (
+          allPosts.map(
+            ({ _id, question, answer, category, timeCreated }, index) => {
+              if (regexp.test(question)) {
+                return (
+                  <Collapse.Panel
+                    header={
+                      <div className="collapseHeader">
+                        <p>{question}</p>
+                        {isAdmin && (
+                          <div className="options">
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleDeletePost(_id);
                               }}
-                            />
-                          </button>
-                          {/* <button
-                          onClick={(e) => {
-                            handleEditPost({
-                              _id,
-                              question,
-                              answer,
-                              category,
-                              timeCreated,
-                            });
-                            e.stopPropagation();
-                          }}
-                        >
-                          <EditOutlined style={{ fontSize: "20px" }} />
-                        </button> */}
-                        </div>
-                      )}
-                    </div>
-                  }
-                  key={index}
-                >
-                  <Post answer={answer} timeCreated={timeCreated} />
-                </Collapse.Panel>
-              );
-            } else if (index !== 0 && showCount !== 0) {
-              return <p className="notFinded">Не найдено...</p>;
-            } else {
-              return;
+                            >
+                              <DeleteOutlined
+                                style={{
+                                  fontSize: "20px",
+                                  color: "red",
+                                }}
+                              />
+                            </button>
+                            <button
+                              onClick={(e) => {
+                                handleToggleEditModal();
+                                e.stopPropagation();
+                                setOldQuestion(question);
+                                setOldAnswer(answer);
+                                setOldCateg(category);
+                                setCurrId(_id);
+                              }}
+                            >
+                              <EditOutlined style={{ fontSize: "20px" }} />
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    }
+                    key={index}
+                  >
+                    <Post answer={answer} timeCreated={timeCreated} />
+                  </Collapse.Panel>
+                );
+              }
             }
-          })}
+          )
+        ) : (
+          <h1 className="someProblems">Some server problems!</h1>
+        )}
+        {allPosts && allPosts.every((p) => !regexp.test(p.question)) && (
+          <p className="notFinded">Ничего не найдено...</p>
+        )}
       </Collapse>
     </div>
   );

@@ -1,0 +1,48 @@
+.adminPanel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: var(--black);
+  background-color: var(--bg);
+  border-radius: 20px;
+  padding: 40px 10px;
+  h1 {
+    font-size: 20px;
+    padding: 10px;
+    text-align: center;
+
+    @media screen and (max-width: 678px) {
+      font-size: 14px;
+      padding: 8px;
+    }
+  }
+}
+.otp-input {
+  width: 89px;
+  height: 60px;
+  border: 1px solid var(--black);
+  border-radius: 10px;
+  margin-right: 11px;
+
+  input {
+    width: 100% !important;
+    height: 100%;
+    border-radius: 10px;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--black);
+    font-size: 24px;
+  }
+
+  &:last-child {
+    margin-right: 0;
+  }
+
+  @media (max-width: 768px) {
+    width: 53px;
+    height: 50px;
+    margin-right: 8px;
+  }
+}

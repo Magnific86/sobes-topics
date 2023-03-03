@@ -44,6 +44,7 @@ export const FeedbackForm: FC = () => {
       console.error(e);
     } finally {
       setButtonContent("post");
+      handleToggleModal();
     }
   };
 
