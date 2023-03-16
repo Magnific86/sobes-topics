@@ -7,7 +7,7 @@ interface PostProps {
 
 export const Post: FC<PostProps> = ({ answer, timeCreated }) => {
   return (
-    <div className="eachPost">
+    <div className="eachAnswer">
       <div className="mainContent">
         <p>{answer}</p>
       </div>

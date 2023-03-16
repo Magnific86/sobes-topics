@@ -1,8 +1,9 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, FormEvent } from "react";
 import { Modal } from "antd";
 import OtpInput from "react-otp-input";
 import { useAppContext } from "../context/MyContext";
 import { toast } from "react-toastify";
+import { setSignerToAdmin } from "../utils/web3Actions/setSignerToAdmin";
 
 export const AdminPanel = () => {
   const { openAdminPanel, handleToggleAdminPanel, setIsAdmin } =
@@ -20,17 +21,19 @@ export const AdminPanel = () => {
     setOtp(otp);
   };
 
-  useEffect(() => {
+  const handleOtpSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (otp === SECRET_PASS) {
-      setIsAdmin(true);
-      toast.success("Меня взломали");
+      await setSignerToAdmin();
+      setIsAdmin("true");
+      toast.success("Вы стали админом");
       handleToggleAdminPanel();
       setOtp("");
     } else if (otp.length === 4 && otp !== SECRET_PASS) {
       toast.warn("неверно");
       setOtp("");
     }
-  }, [otp]);
+  };
 
   return (
     <Modal
@@ -45,14 +48,17 @@ export const AdminPanel = () => {
           Чтобы иметь возможность удалять или изменять посты, введите пароль
         </h1>
         <p>(пароль: {SECRET_PASS})</p>
-        <OtpInput
-          shouldAutoFocus={true}
-          numInputs={4}
-          separator={""}
-          className="otp-input"
-          value={otp}
-          onChange={handleOtp}
-        />
+        <form onSubmit={(e) => handleOtpSubmit(e)}>
+          <OtpInput
+            shouldAutoFocus={true}
+            numInputs={4}
+            separator={""}
+            className="otp-input"
+            value={otp}
+            onChange={handleOtp}
+          />
+          <button>submit</button>
+        </form>
       </div>
     </Modal>
   );

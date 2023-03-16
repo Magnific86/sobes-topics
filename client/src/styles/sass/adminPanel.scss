@@ -1,12 +1,13 @@
 .adminPanel {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   flex-direction: column;
   color: var(--black);
   background-color: var(--bg);
   border-radius: 20px;
   padding: 40px 10px;
+  min-height: 400px;
   h1 {
     font-size: 20px;
     padding: 10px;

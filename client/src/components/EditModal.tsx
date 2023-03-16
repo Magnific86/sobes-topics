@@ -1,9 +1,11 @@
 import { Modal } from "antd";
 import axios from "axios";
-import { FC, FormEvent, ChangeEvent, useState, useRef, useEffect } from "react";
+import { FC, FormEvent, ChangeEvent, useState, useEffect } from "react";
+import sha256 from "sha256";
 import { toast } from "react-toastify";
 import { useAppContext } from "../context/MyContext";
-import { categories } from "../utils/categories";
+import { categories } from "../utils/staticArrs/categories";
+import { getSignerFunc } from "../utils/web3Actions/getSignerFunc";
 
 interface EditModalProps {
   id: string;
@@ -18,11 +20,14 @@ export const EditModal: FC<EditModalProps> = ({
   oldAnswer,
   oldCateg,
 }) => {
+  // const oldQuestionForCheck: string = oldQuestion;
+  // const oldAnswerForCheck: string = oldAnswer;
+  // const oldCategForCheck: string = oldCateg;
   const { openEditModal, handleToggleEditModal, getAllPosts } = useAppContext();
   const [buttonContent, setButtonContent] = useState("edit");
-  const [question, setQuestion] = useState(oldQuestion);
-  const [answer, setAnswer] = useState(oldAnswer);
-  const [categ, setCateg] = useState(oldCateg);
+  const [question, setQuestion] = useState<string>(oldQuestion);
+  const [answer, setAnswer] = useState<string>(oldAnswer);
+  const [categ, setCateg] = useState<string>(oldCateg);
 
   useEffect(() => {
     setAnswer(oldAnswer);
@@ -32,28 +37,54 @@ export const EditModal: FC<EditModalProps> = ({
 
   const handleEditPost = async (e: FormEvent<HTMLFormElement>, id: string) => {
     e.preventDefault();
+    if (answer.length <= 0 || question.length <= 0 || categ.length <= 0) {
+      toast.error("Не может ничего не быть))");
+      return;
+    }
+
     setButtonContent("editing...");
-    const editedPost = {
-      _id: id,
-      question: question,
-      answer: answer,
-      category: categ,
-      timeCreated: String(new Date().toLocaleString()),
-    };
-    try {
-      const data = await axios.put(
-        "http://localhost:5000/api/posts",
-        editedPost
-      );
-      console.log(data.data);
-      toast.success("post successfully updated");
-    } catch (e) {
-      console.error(e);
-      toast.error(e?.message);
-    } finally {
+
+    if (
+      !(answer === oldAnswer) ||
+      !(question === oldQuestion) ||
+      !(categ === oldCateg)
+    ) {
+      try {
+        const oldHash = sha256(String(oldQuestion + oldAnswer + oldCateg));
+        const hash = sha256(String(question + answer + categ));
+        console.log("hash", hash);
+
+        const editedPost = {
+          _id: id,
+          hash,
+          question,
+          answer,
+          category: categ,
+          timeCreated: String(new Date().toLocaleString() + "Upd"),
+        };
+        console.log("new post", editedPost);
+
+        const { signedContract } = await getSignerFunc();
+        const tx = await signedContract.setNewPostHashAfterEdit(hash, oldHash);
+        console.log("tx before wait", tx);
+        await tx.wait();
+        console.log("tx after wait", tx);
+        const data = await axios.put(
+          "http://localhost:5000/api/posts",
+          editedPost
+        );
+        console.log(data.data);
+        toast.success("пост успешно редактирован");
+      } catch (e) {
+        console.error(e);
+        toast.error(e?.message);
+      }
       getAllPosts();
       setButtonContent("edit");
       handleToggleEditModal();
+    } else {
+      toast.error("Ничего не поменялось, запрос не отправлен...");
+      setButtonContent("edit");
     }
   };
 

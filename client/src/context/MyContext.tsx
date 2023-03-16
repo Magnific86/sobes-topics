@@ -14,8 +14,8 @@ interface ContextState {
   handleToggleModal: () => void;
   buttonContent: string;
   setButtonContent: (str: string) => void;
-  isAdmin: boolean;
-  setIsAdmin: (state: boolean) => void;
+  isAdmin: string;
+  setIsAdmin: (state: string) => void;
   allPosts: IPost[];
   getAllPosts: () => void;
   openInfoDrawer: boolean;
@@ -46,7 +46,7 @@ export const MainProvider: FC<ChildrenProps> = ({ children }) => {
   const [openAdminPanel, setOpenAdminPanel] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [buttonContent, setButtonContent] = useState("post");
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isAdmin, setIsAdmin] = useState("disconnected");
   const [currId, setCurrId] = useState("");
   const [allPosts, setAllPosts] = useState();
   const [oldQuestion, setOldQuestion] = useState("");

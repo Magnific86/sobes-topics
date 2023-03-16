@@ -3,7 +3,10 @@ import { Drawer } from "antd";
 import { useAppContext } from "../context/MyContext";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { categories } from "../utils/categories";
+import { categories } from "../utils/staticArrs/categories";
+import sha256 from "sha256";
+import { useWindowSize } from "../utils/hooks/useWindowSize";
+import { getSignerFunc } from "../utils/web3Actions/getSignerFunc";
 
 export const AddPostForm = () => {
   const {
@@ -17,27 +20,34 @@ export const AddPostForm = () => {
   const answRef = useRef<HTMLTextAreaElement>(null);
   const categRef = useRef<HTMLSelectElement>(null);
   const errRef = useRef<HTMLSpanElement>(null);
+  const { width: w } = useWindowSize();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (
-      answRef.current?.value &&
-      questRef.current?.value &&
-      categRef.current?.value
-    ) {
+    const question = questRef.current?.value;
+    const answer = answRef.current?.value;
+    const category = categRef.current?.value;
+    const timeCreated = String(new Date().toLocaleString());
+    if (question && answer && category) {
       setButtonContent("posting...");
+      const hash = sha256(String(question + answer + category));
+
       const post = {
-        question: String(questRef.current?.value),
-        answer: String(answRef.current?.value),
-        timeCreated: String(new Date().toLocaleString()),
-        category: String(categRef.current?.value),
+        hash: String(hash),
+        question,
+        answer,
+        category,
+        timeCreated,
       };
       console.table({ "ready to post to server ": post });
 
       try {
+        const { signedContract } = await getSignerFunc();
+        const tx = await signedContract.addPostHash(hash);
+        await tx.wait();
         const res = await axios.post("http://localhost:5000/api/posts", post);
         console.log("res.data", res.data);
-        toast.success("success added!");
+        toast.success("Пост успешно добавлен");
       } catch (e) {
         toast.error("failed to post new post");
         console.error(e);
@@ -77,7 +87,7 @@ export const AddPostForm = () => {
   return (
     <Drawer
       placement="right"
-      width={800}
+      width={w > 900 ? 800 : 380}
       height={"80%"}
       open={openDrawer}
       onClose={handleToggleDrawer}

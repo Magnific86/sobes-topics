@@ -6,6 +6,7 @@ export interface ChildrenProps {
 
 export interface IPost {
   _id: string;
+  hash: string;
   question: string;
   answer: string;
   category: string;
@@ -17,6 +18,6 @@ export interface LayoutProps {
 }
 
 export interface ISocial {
-  icon: ReactNode
-  url: string
+  icon: ReactNode;
+  url: string;
 }

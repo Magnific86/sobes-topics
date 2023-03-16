@@ -1,9 +1,8 @@
-import { Button, Modal, Rate } from "antd";
+import { Modal, Rate } from "antd";
 import { FC, FormEvent, ChangeEvent, useState, useRef } from "react";
 import { useAppContext } from "../context/MyContext";
 import emailjs from "@emailjs/browser";
 import { toast } from "react-toastify";
-import { useInput } from "../utils/useInput";
 
 interface IValue {
   title: string;
@@ -38,7 +37,7 @@ export const FeedbackForm: FC = () => {
         );
         setValue(null);
         console.log("response from emailjs", data);
-        toast.success("Your feedback sended!");
+        toast.success("Запрос успешно отправлен");
       }
     } catch (e) {
       console.error(e);
@@ -47,8 +46,6 @@ export const FeedbackForm: FC = () => {
       handleToggleModal();
     }
   };
-
-  const { value: val, onChange, onBlur } = useInput("");
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const valueField = e.target.value;
