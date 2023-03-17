@@ -72,7 +72,7 @@
         color: var(--text-color);
       }
     }
-    .timeCreated {
+    .categAndTimeCreated {
       display: flex;
       width: 100%;
       justify-content: end;
@@ -89,7 +89,9 @@
   row-gap: 40px;
 
   .eachPost {
-    border-bottom: 1px solid var(--text-color);
+    padding: 20px 0;
+    border-bottom: 2px solid var(--black);
+    border-top: 2px solid var(--black);
     border-radius: 20px;
     h4 {
       font-size: 30px;
@@ -127,11 +129,12 @@
           font-size: 16px;
         }
       }
-      .timeCreated {
+      .categAndTimeCreated {
         color: var(--text-color);
+        width: 100%;
+        justify-content: space-between;
         display: flex;
         width: 100%;
-        justify-content: end;
         height: 10%;
         font-size: 12px;
       }

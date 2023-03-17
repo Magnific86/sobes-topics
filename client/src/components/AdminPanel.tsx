@@ -13,9 +13,9 @@ export const AdminPanel = () => {
 
   const SECRET_PASS = "1234";
 
-  useEffect(() => {
-    passRef.current?.focus();
-  }, [openAdminPanel]);
+  // useEffect(() => {
+  //   passRef.current?.focus();  // crushing app
+  // }, [openAdminPanel]);
 
   const handleOtp = (otp: string) => {
     setOtp(otp);
@@ -44,12 +44,15 @@ export const AdminPanel = () => {
       footer={null}
     >
       <div className="adminPanel">
-        <h1>
-          Чтобы иметь возможность удалять или изменять посты, введите пароль
-        </h1>
-        <p>(пароль: {SECRET_PASS})</p>
+        <div>
+          <h1>
+            Чтобы иметь возможность удалять или изменять посты, введите пароль
+          </h1>
+          <p>(пароль: {SECRET_PASS})</p>
+        </div>
         <form onSubmit={(e) => handleOtpSubmit(e)}>
           <OtpInput
+            ref={passRef}
             shouldAutoFocus={true}
             numInputs={4}
             separator={""}
@@ -57,7 +60,7 @@ export const AdminPanel = () => {
             value={otp}
             onChange={handleOtp}
           />
-          <button>submit</button>
+          <button>далее</button>
         </form>
       </div>
     </Modal>

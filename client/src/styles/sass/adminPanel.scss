@@ -18,13 +18,30 @@
       padding: 8px;
     }
   }
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+    padding: 30px;
+    font-size: 26px;
+    margin: 0 auto;
+    border-radius: 20px;
+    background-color: var(--black);
+    color: var(--text-color);
+    @media screen and (max-width: 768px) {
+      padding: 10px;
+      font-size: 18px;
+    }
+  }
 }
 .otp-input {
-  width: 89px;
-  height: 60px;
+  width: 100px;
+  height: 80px;
   border: 1px solid var(--black);
   border-radius: 10px;
   margin-right: 11px;
+  margin-bottom: 30px;
 
   input {
     width: 100% !important;

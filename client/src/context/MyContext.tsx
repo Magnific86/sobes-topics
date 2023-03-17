@@ -33,6 +33,12 @@ interface ContextState {
   setOldAnswer: (state: string) => void;
   oldCateg: string;
   setOldCateg: (state: string) => void;
+  oldTimeCreated: string;
+  setOldTimeCreated: (state: string) => void;
+  activeCateg: string;
+  setActiveCateg: (state: string) => void;
+  serverError: boolean;
+  setServerError: (state: boolean) => void;
 }
 
 const MyContext = createContext<ContextState>(null);
@@ -52,13 +58,16 @@ export const MainProvider: FC<ChildrenProps> = ({ children }) => {
   const [oldQuestion, setOldQuestion] = useState("");
   const [oldAnswer, setOldAnswer] = useState("");
   const [oldCateg, setOldCateg] = useState("");
+  const [oldTimeCreated, setOldTimeCreated] = useState("");
+  const [activeCateg, setActiveCateg] = useState("all");
+  const [serverError, setServerError] = useState(false);
 
   const getAllPosts = async () => {
     try {
       const data = await axios.get(`http://localhost:5000/api/posts`);
-      // console.log("Post list updated", data.data.body);
       setAllPosts(data.data.body);
     } catch (e) {
+      setServerError(true);
       console.error("failed to update post list", e);
     }
   };
@@ -130,6 +139,12 @@ export const MainProvider: FC<ChildrenProps> = ({ children }) => {
         setOldAnswer,
         oldCateg,
         setOldCateg,
+        oldTimeCreated,
+        setOldTimeCreated,
+        activeCateg,
+        setActiveCateg,
+        serverError,
+        setServerError,
       }}
     >
       {children}

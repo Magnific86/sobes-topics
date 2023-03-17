@@ -1,48 +1,19 @@
-import { FC, useState } from "react";
-import { Contract } from "ethers";
+import { FC } from "react";
 import { AddPostForm } from "../components/AddPostForm";
-import { DarkMode } from "../components/DarkMode";
 import { FeedbackForm } from "../components/FeedbackForm";
 import { useAppContext } from "../context/MyContext";
-import { InfoCircleOutlined } from "@ant-design/icons";
 import { AboutDrawer } from "../components/AboutDrawer";
 import { Image } from "antd";
 import { ISocial, LayoutProps } from "../globalTypes";
 import { AdminPanel } from "../components/AdminPanel";
 import { EditModal } from "../components/EditModal";
-import { IoIosAddCircle } from "react-icons/io";
-import { toast } from "react-toastify";
 import { socials } from "../utils/staticArrs/socials";
-import { getSignerFunc } from "../utils/web3Actions/getSignerFunc";
 import { useWindowSize } from "../utils/hooks/useWindowSize";
-import { abi, StorageAddress } from "../utils/web3Actions/addressAndAbi";
+import { MyHeader } from "../components/MyHeader";
 
 export const MyLayout: FC<LayoutProps> = ({ children }) => {
-  const {
-    handleToggleDrawer,
-    handleToggleModal,
-    handleToggleInfoDrawer,
-    theme,
-    handleToggleAdminPanel,
-    isAdmin,
-    currId,
-    oldQuestion,
-    oldAnswer,
-    oldCateg,
-    setIsAdmin,
-  } = useAppContext();
+  const { theme, currId, oldQuestion, oldAnswer, oldCateg, oldTimeCreated } = useAppContext();
   const { width: w } = useWindowSize();
-
-  const handleCheckAdmin = async () => {
-    try {
-      const { signer, signedContract } = await getSignerFunc();
-      const boolIsAdmin = await signedContract.admins(signer.getAddress());
-      setIsAdmin(String(boolIsAdmin));
-      console.log("boolIs admin", boolIsAdmin);
-    } catch (e) {
-      toast.error("Не удалось подключиться и проверить на админа");
-    }
-  };
 
   // const getMetaMaskBalance = async () => {
   //   //@ts-ignore
@@ -57,40 +28,7 @@ export const MyLayout: FC<LayoutProps> = ({ children }) => {
 
   return (
     <div className="container">
-      <header>
-        <DarkMode />
-        <button onClick={handleToggleDrawer}>
-          {w > 768 ? (
-            "Добавить пост"
-          ) : (
-            <IoIosAddCircle style={{ fontSize: w > 686 ? "26px" : "14px" }} />
-          )}
-        </button>
-        <button onClick={handleToggleModal}>
-          {w > 686 ? "Оставить отзыв" : "Отзыв"}
-        </button>
-        <button onClick={handleToggleInfoDrawer}>
-          <InfoCircleOutlined style={{ fontSize: w > 686 ? "26px" : "14px" }} />
-        </button>
-        {isAdmin === "disconnected" && (
-          <button onClick={handleCheckAdmin}>войти</button>
-        )}
-        {isAdmin === "false" && (
-          <button onClick={handleToggleAdminPanel}>
-            {/* <GrUserAdmin
-              style={{
-                fontSize: w > 686 ? "26px" : "14px",
-                color: "var(--text-color)",
-              }}
-            /> */}
-            стать админом
-          </button>
-        )}
-        {isAdmin === "true" && <h1>уже админ</h1>}
-        {/* <button onClick={connectWallet}>
-          {isConnected ? "connnected" : "connnect"}
-        </button> */}
-      </header>
+      <MyHeader />
       {children}
       <footer>
         <div className="divider" />
@@ -126,6 +64,7 @@ export const MyLayout: FC<LayoutProps> = ({ children }) => {
         oldQuestion={oldQuestion}
         oldAnswer={oldAnswer}
         oldCateg={oldCateg}
+        oldTimeCreated={oldTimeCreated}
       />
     </div>
   );

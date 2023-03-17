@@ -12,6 +12,7 @@ interface EditModalProps {
   oldQuestion: string;
   oldAnswer: string;
   oldCateg: string;
+  oldTimeCreated: string;
 }
 
 export const EditModal: FC<EditModalProps> = ({
@@ -19,6 +20,7 @@ export const EditModal: FC<EditModalProps> = ({
   oldQuestion,
   oldAnswer,
   oldCateg,
+  oldTimeCreated,
 }) => {
   // const oldQuestionForCheck: string = oldQuestion;
   // const oldAnswerForCheck: string = oldAnswer;
@@ -60,7 +62,8 @@ export const EditModal: FC<EditModalProps> = ({
           question,
           answer,
           category: categ,
-          timeCreated: String(new Date().toLocaleString() + "Upd"),
+          timeCreated:
+            oldTimeCreated + " " + String("Upd" + new Date().toLocaleString()),
         };
         console.log("new post", editedPost);
 

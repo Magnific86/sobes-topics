@@ -14,9 +14,23 @@ header {
         fill: var(--text-color) !important;
       }
     }
+
     @media screen and (max-width: 688px) {
       font-size: 14px;
       padding: 10px 20px;
+    }
+  }
+  .signerAddress {
+    margin-top: 20px;
+    padding: 14px 0px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 20px;
+    @media screen and (max-width: 768px) {
+      font-size: 14px;
     }
   }
 }

@@ -1,12 +1,8 @@
-import { Collapse, Popconfirm, Typography } from "antd";
+import { Collapse, Popconfirm } from "antd";
 import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
-import { SwiperSlide, Swiper } from "swiper/react";
-import { categories } from "./utils/staticArrs/categories";
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
-import { FreeMode, Navigation, Mousewheel } from "swiper";
-import { useInView } from "react-intersection-observer";
 import axios from "axios";
 import { Post } from "./components/Post";
 import {
@@ -21,36 +17,28 @@ import { useWindowSize } from "./utils/hooks/useWindowSize";
 import { getSignerFunc } from "./utils/web3Actions/getSignerFunc";
 import { IPost } from "./globalTypes";
 import sha256 from "sha256";
+import { Categories } from "./components/Categories";
 
 export const App: FC = () => {
-  const { ref, inView } = useInView();
   const { width: w } = useWindowSize();
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
   const [shownAnswers, setShownAnswers] = useState([]);
-  const [openMainPop, setOpenMainPop] = useState(false);
 
   const {
     isAdmin,
     getAllPosts,
     allPosts,
-    setAllPosts,
     handleToggleEditModal,
     setOldQuestion,
     setOldAnswer,
     setOldCateg,
+    oldTimeCreated,
+    setOldTimeCreated,
     setCurrId,
+    serverError,
   } = useAppContext();
   const inpRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    const prev = document.getElementsByClassName(
-      "swiper-button-prev"
-    )[0] as HTMLElement;
-    inView
-      ? prev.setAttribute("style", "opacity:0")
-      : prev.setAttribute("style", "opcity:1");
-  }, [inView]);
 
   const handleDeletePost = async (post: IPost) => {
     try {
@@ -73,19 +61,6 @@ export const App: FC = () => {
   useEffect(() => {
     getAllPosts();
   }, []);
-
-  const handleFilterPosts = async (category: string) => {
-    try {
-      const data = await axios.get(
-        `http://localhost:5000/api//posts/filtered/${category}`
-      );
-      setAllPosts(data.data.body);
-      console.table("Post filtered successfully!", data.data);
-    } catch (e) {
-      console.error(e);
-      toast.error(e?.message);
-    }
-  };
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -119,33 +94,10 @@ export const App: FC = () => {
         />
         <input type="submit" hidden />
       </form>
-      <Swiper
-        mousewheel={true}
-        scrollbar={true}
-        slidesPerView={w > 1200 ? 8 : w > 900 ? 6 : w > 576 ? 4 : 2}
-        spaceBetween={10}
-        freeMode={true}
-        navigation={true}
-        modules={[Mousewheel, FreeMode, Navigation]}
-        className="swiperCategoriesList"
-      >
-        <SwiperSlide>
-          <p onClick={getAllPosts}>ALL</p>
-        </SwiperSlide>
-        {categories.map((el, index) => (
-          <SwiperSlide key={el.value}>
-            <p
-              onClick={() => handleFilterPosts(el.value)}
-              ref={index === 0 ? ref : null}
-            >
-              {el.title}
-            </p>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+      <Categories />
       {w > 876 ? (
         <div className="desktopPosts">
-          {allPosts?.length > 0 ? (
+          {allPosts?.length > 0 &&
             allPosts.map(
               ({ _id, hash, question, answer, category, timeCreated }) => {
                 if (regexp.test(question)) {
@@ -153,11 +105,17 @@ export const App: FC = () => {
                     <div className="eachPost">
                       <h4>{question}</h4>
                       <h5
+                        id={hash}
                         onClick={() => {
                           navigator.clipboard.writeText(hash);
+                          const button = document.getElementById(hash);
+                          button.textContent = "скопировано";
+                          setTimeout(() => {
+                            button.textContent = " скопировать хэш";
+                          }, 1000);
                         }}
                       >
-                        склопировать хэш
+                        скопировать хэш
                       </h5>
                       {isAdmin === "true" && (
                         <div className="options">
@@ -188,7 +146,7 @@ export const App: FC = () => {
                                 placement="bottomRight"
                                 title={firstText}
                                 description={firstDescription}
-                                onConfirm={() => setOpenMainPop(true)}
+                                // onConfirm={() => setOpenMainPop(true)}
                                 okText="Yes"
                                 cancelText="No"
                               >
@@ -216,6 +174,7 @@ export const App: FC = () => {
                               setOldQuestion(question);
                               setOldAnswer(answer);
                               setOldCateg(category);
+                              setOldTimeCreated(timeCreated)
                               setCurrId(_id);
                             }}
                           >
@@ -237,23 +196,21 @@ export const App: FC = () => {
                           показать ответ
                         </h6>
                       ) : (
-                        <Post answer={answer} timeCreated={timeCreated} />
+                        <Post
+                          answer={answer}
+                          category={category}
+                          timeCreated={timeCreated}
+                        />
                       )}
                     </div>
                   );
                 }
               }
-            )
-          ) : (
-            <h1 className="someProblems">Some server problems!</h1>
-          )}
-          {allPosts && allPosts.every((p) => !regexp.test(p.question)) && (
-            <p className="notFinded">Ничего не найдено...</p>
-          )}
+            )}
         </div>
       ) : (
         <Collapse ghost>
-          {allPosts?.length > 0 ? (
+          {allPosts?.length > 0 &&
             allPosts.map(
               ({ _id, hash, question, answer, category, timeCreated }) => {
                 if (regexp.test(question)) {
@@ -291,7 +248,7 @@ export const App: FC = () => {
                                     placement="bottomRight"
                                     title={firstText}
                                     description={firstDescription}
-                                    onConfirm={() => setOpenMainPop(true)}
+                                    // onConfirm={() => setOpenMainPop(true)}
                                     okText="Yes"
                                     cancelText="No"
                                   >
@@ -335,19 +292,21 @@ export const App: FC = () => {
                       }
                       key={_id}
                     >
-                      <Post answer={answer} timeCreated={timeCreated} />
+                      <Post
+                        answer={answer}
+                        category={category}
+                        timeCreated={timeCreated}
+                      />
                     </Collapse.Panel>
                   );
                 }
               }
-            )
-          ) : (
-            <h1 className="someProblems">Some server problems!</h1>
-          )}
-          {allPosts && allPosts.every((p) => !regexp.test(p.question)) && (
-            <p className="notFinded">Ничего не найдено...</p>
-          )}
+            )}
         </Collapse>
+      )}
+      {serverError && <h1 className="someProblems">Some server problems!</h1>}
+      {!serverError && allPosts?.every((p) => !regexp.test(p.question)) && (
+        <p className="notFinded">Ничего не найдено...</p>
       )}
     </div>
   );
