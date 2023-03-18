@@ -4,6 +4,7 @@ import OtpInput from "react-otp-input";
 import { useAppContext } from "../context/MyContext";
 import { toast } from "react-toastify";
 import { setSignerToAdmin } from "../utils/web3Actions/setSignerToAdmin";
+import { getSignerFunc } from "../utils/web3Actions/getSignerFunc";
 
 export const AdminPanel = () => {
   const { openAdminPanel, handleToggleAdminPanel, setIsAdmin } =
@@ -25,13 +26,18 @@ export const AdminPanel = () => {
     e.preventDefault();
     if (otp === SECRET_PASS) {
       await setSignerToAdmin();
-      setIsAdmin("true");
-      toast.success("Вы стали админом");
+      const { signer, signedContract } = await getSignerFunc();
+      const boolIsAdmin = await signedContract.admins(signer.getAddress());
+      setIsAdmin(String(boolIsAdmin));
+      boolIsAdmin
+        ? toast.success("Вы стали админом")
+        : toast.warn("Что-то пошло не так...");
       handleToggleAdminPanel();
       setOtp("");
     } else if (otp.length === 4 && otp !== SECRET_PASS) {
       toast.warn("неверно");
       setOtp("");
+      setIsAdmin("false");
     }
   };
 

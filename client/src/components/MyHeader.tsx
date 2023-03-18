@@ -25,6 +25,7 @@ export const MyHeader = () => {
       setSignerAddress(String(await signer.getAddress()));
       const boolIsAdmin = await signedContract.admins(signer.getAddress());
       setIsAdmin(String(boolIsAdmin));
+      boolIsAdmin ? toast.success("Велком бэк") : toast.warn("Не админ");
       console.log("boolIs admin", boolIsAdmin);
     } catch (e) {
       toast.error("Не удалось подключиться и проверить на админа");

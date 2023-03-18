@@ -9,6 +9,6 @@ export const setSignerToAdmin = async () => {
     await tx.wait();
   } catch (e) {
     console.error(e);
-    toast.error("Проблемы с блокчейном...");
+    toast.error("Проблемы с блокчейном... или прервали транзакцию");
   }
 };

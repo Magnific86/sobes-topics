@@ -102,7 +102,7 @@ export const App: FC = () => {
               ({ _id, hash, question, answer, category, timeCreated }) => {
                 if (regexp.test(question)) {
                   return (
-                    <div className="eachPost">
+                    <div key={_id} className="eachPost">
                       <h4>{question}</h4>
                       <h5
                         id={hash}

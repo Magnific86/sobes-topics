@@ -66,6 +66,7 @@ export const MainProvider: FC<ChildrenProps> = ({ children }) => {
     try {
       const data = await axios.get(`http://localhost:5000/api/posts`);
       setAllPosts(data.data.body);
+      setServerError(false);
     } catch (e) {
       setServerError(true);
       console.error("failed to update post list", e);

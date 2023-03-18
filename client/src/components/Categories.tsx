@@ -54,7 +54,10 @@ export const Categories = () => {
       <SwiperSlide>
         <p
           className={activeCateg === "all" ? "activeCateg" : "eachCateg"}
-          onClick={getAllPosts}
+          onClick={() => {
+            getAllPosts();
+            setActiveCateg("all");
+          }}
         >
           ALL
         </p>
