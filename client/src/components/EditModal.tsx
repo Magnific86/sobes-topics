@@ -22,10 +22,13 @@ export const EditModal: FC<EditModalProps> = ({
   oldCateg,
   oldTimeCreated,
 }) => {
-  // const oldQuestionForCheck: string = oldQuestion;
-  // const oldAnswerForCheck: string = oldAnswer;
-  // const oldCategForCheck: string = oldCateg;
-  const { openEditModal, handleToggleEditModal, getAllPosts } = useAppContext();
+  const {
+    openEditModal,
+    handleToggleEditModal,
+    getAllPosts,
+    activeCateg,
+    handleFilterPosts,
+  } = useAppContext();
   const [buttonContent, setButtonContent] = useState("edit");
   const [question, setQuestion] = useState<string>(oldQuestion);
   const [answer, setAnswer] = useState<string>(oldAnswer);
@@ -82,7 +85,7 @@ export const EditModal: FC<EditModalProps> = ({
         console.error(e);
         toast.error(e?.message);
       }
-      getAllPosts();
+      activeCateg === "all" ? getAllPosts() : handleFilterPosts(activeCateg);
       setButtonContent("edit");
       handleToggleEditModal();
     } else {

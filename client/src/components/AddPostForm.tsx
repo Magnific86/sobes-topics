@@ -15,6 +15,8 @@ export const AddPostForm = () => {
     buttonContent,
     setButtonContent,
     getAllPosts,
+    activeCateg,
+    handleFilterPosts,
   } = useAppContext();
   const questRef = useRef<HTMLInputElement>(null);
   const answRef = useRef<HTMLTextAreaElement>(null);
@@ -53,7 +55,9 @@ export const AddPostForm = () => {
         console.error(e);
       }
       setButtonContent("post");
-      getAllPosts();
+      console.log("activeXateg in post form", activeCateg);
+
+      activeCateg === "all" ? getAllPosts() : handleFilterPosts(activeCateg);
       answRef.current.value = "";
       questRef.current.value = "";
       categRef.current.value = "";

@@ -1,6 +1,7 @@
 import { createContext, FC, useState, useContext, useEffect } from "react";
 import { ChildrenProps, IPost } from "../globalTypes";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 interface ContextState {
   theme: string;
@@ -39,6 +40,7 @@ interface ContextState {
   setActiveCateg: (state: string) => void;
   serverError: boolean;
   setServerError: (state: boolean) => void;
+  handleFilterPosts: (state: string) => void;
 }
 
 const MyContext = createContext<ContextState>(null);
@@ -70,6 +72,20 @@ export const MainProvider: FC<ChildrenProps> = ({ children }) => {
     } catch (e) {
       setServerError(true);
       console.error("failed to update post list", e);
+    }
+  };
+
+  const handleFilterPosts = async (category: string) => {
+    try {
+      const data = await axios.get(
+        `http://localhost:5000/api//posts/filtered/${category}`
+      );
+      setAllPosts(data.data.body);
+      // setActiveCateg(activeCateg === "all" ? "all" : category);
+      console.table("Post filtered successfully!", data.data);
+    } catch (e) {
+      console.error(e);
+      toast.error(e?.message);
     }
   };
 
@@ -146,6 +162,7 @@ export const MainProvider: FC<ChildrenProps> = ({ children }) => {
         setActiveCateg,
         serverError,
         setServerError,
+        handleFilterPosts,
       }}
     >
       {children}

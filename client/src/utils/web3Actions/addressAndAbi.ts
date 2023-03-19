@@ -1,100 +1,200 @@
-export const StorageAddress = "0xdc399e1c91d244608f986d870568f1f6855e3975";
+export const StorageAddress = "0x5fbdb2315678afecb367f032d93f642f64180aa3";
 export const abi = [
-  { type: "constructor", stateMutability: "nonpayable", inputs: [] },
-  { type: "fallback", stateMutability: "payable" },
   {
-    type: "function",
+    inputs: [],
     stateMutability: "nonpayable",
-    outputs: [],
+    type: "constructor",
+  },
+  {
+    stateMutability: "payable",
+    type: "fallback",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "_postHash",
+        type: "string",
+      },
+    ],
     name: "addPostHash",
-    inputs: [{ type: "string", name: "_postHash", internalType: "string" }],
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
   },
   {
-    type: "function",
-    stateMutability: "view",
-    outputs: [{ type: "bool", name: "", internalType: "bool" }],
+    inputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
     name: "admins",
-    inputs: [{ type: "address", name: "", internalType: "address" }],
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
   },
   {
-    type: "function",
-    stateMutability: "nonpayable",
-    outputs: [],
+    inputs: [
+      {
+        internalType: "string",
+        name: "_postHash",
+        type: "string",
+      },
+    ],
     name: "deletePostHash",
-    inputs: [{ type: "string", name: "_postHash", internalType: "string" }],
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
   },
   {
-    type: "function",
-    stateMutability: "view",
-    outputs: [{ type: "string[]", name: "", internalType: "string[]" }],
+    inputs: [],
     name: "getAllPostsHashes",
-    inputs: [],
+    outputs: [
+      {
+        internalType: "string[]",
+        name: "",
+        type: "string[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
   },
   {
-    type: "function",
-    stateMutability: "view",
-    outputs: [{ type: "uint256", name: "", internalType: "uint256" }],
+    inputs: [],
     name: "index",
-    inputs: [],
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
   },
   {
-    type: "function",
-    stateMutability: "view",
-    outputs: [{ type: "uint256", name: "", internalType: "uint256" }],
+    inputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
     name: "indexes",
-    inputs: [{ type: "string", name: "", internalType: "string" }],
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
   },
   {
-    type: "function",
-    stateMutability: "nonpayable",
-    outputs: [],
+    inputs: [
+      {
+        internalType: "address",
+        name: "_toMakeAdmin",
+        type: "address",
+      },
+    ],
     name: "makeAdmin",
-    inputs: [
-      { type: "address", name: "_toMakeAdmin", internalType: "address" },
-    ],
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
   },
   {
-    type: "function",
-    stateMutability: "view",
-    outputs: [{ type: "address", name: "", internalType: "address" }],
-    name: "owner",
     inputs: [],
-  },
-  {
-    type: "function",
+    name: "owner",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
     stateMutability: "view",
-    outputs: [{ type: "string", name: "", internalType: "string" }],
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
     name: "postsHashes",
-    inputs: [{ type: "uint256", name: "", internalType: "uint256" }],
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
   },
   {
-    type: "function",
-    stateMutability: "nonpayable",
-    outputs: [],
+    inputs: [
+      {
+        internalType: "address",
+        name: "_toRemoveAdmin",
+        type: "address",
+      },
+    ],
     name: "removeAdmin",
-    inputs: [
-      { type: "address", name: "_toRemoveAdmin", internalType: "address" },
-    ],
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
   },
   {
-    type: "function",
-    stateMutability: "nonpayable",
-    outputs: [],
+    inputs: [
+      {
+        internalType: "string",
+        name: "_newPostHash",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "_oldPostHash",
+        type: "string",
+      },
+    ],
     name: "setNewPostHashAfterEdit",
-    inputs: [
-      { type: "string", name: "_newPostHash", internalType: "string" },
-      { type: "string", name: "_oldPostHash", internalType: "string" },
-    ],
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
   },
   {
-    type: "function",
-    stateMutability: "nonpayable",
-    outputs: [],
-    name: "withDraw",
     inputs: [
-      { type: "uint256", name: "_amount", internalType: "uint256" },
-      { type: "address", name: "_to", internalType: "address" },
+      {
+        internalType: "uint256",
+        name: "_amount",
+        type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "_to",
+        type: "address",
+      },
     ],
+    name: "withDraw",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
   },
-  { type: "receive", stateMutability: "payable" },
+  {
+    stateMutability: "payable",
+    type: "receive",
+  },
 ];

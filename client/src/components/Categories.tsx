@@ -14,7 +14,7 @@ import { useInView } from "react-intersection-observer";
 export const Categories = () => {
   const { ref, inView } = useInView();
   const { width: w } = useWindowSize();
-  const { getAllPosts, setAllPosts, setActiveCateg, activeCateg } =
+  const { getAllPosts, handleFilterPosts, setActiveCateg, activeCateg } =
     useAppContext();
 
   useEffect(() => {
@@ -25,20 +25,6 @@ export const Categories = () => {
       ? prev.setAttribute("style", "opacity:0")
       : prev.setAttribute("style", "opcity:1");
   }, [inView]);
-
-  const handleFilterPosts = async (category: string) => {
-    try {
-      const data = await axios.get(
-        `http://localhost:5000/api//posts/filtered/${category}`
-      );
-      setAllPosts(data.data.body);
-      setActiveCateg(category);
-      console.table("Post filtered successfully!", data.data);
-    } catch (e) {
-      console.error(e);
-      toast.error(e?.message);
-    }
-  };
 
   return (
     <Swiper
@@ -66,7 +52,10 @@ export const Categories = () => {
         <SwiperSlide key={value}>
           <p
             className={activeCateg === value ? "activeCateg" : "eachCateg"}
-            onClick={() => handleFilterPosts(value)}
+            onClick={() => {
+              setActiveCateg(value);
+              handleFilterPosts(value);
+            }}
             ref={index === 0 ? ref : null}
           >
             {title}

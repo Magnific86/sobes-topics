@@ -24,6 +24,7 @@ export const App: FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
   const [shownAnswers, setShownAnswers] = useState([]);
+  const [editIndex, setEditIndex] = useState("closed");
 
   const {
     isAdmin,
@@ -72,11 +73,8 @@ export const App: FC = () => {
     handleDeletePost(post);
   };
 
-  const secondText = "Вы точно-точно уверены в этом?";
-  const secondDescription = "Точно приточно удалить";
-
-  const firstText = "Вы уверены, что хотите удалить этот пост?";
-  const firstDescription = "Удалить";
+  const confirmText = "Удаление поста";
+  const confirmDescription = "Вы уверены, что хотите удалить этот пост?";
 
   return (
     <div className="main">
@@ -111,7 +109,7 @@ export const App: FC = () => {
                           const button = document.getElementById(hash);
                           button.textContent = "скопировано";
                           setTimeout(() => {
-                            button.textContent = " скопировать хэш";
+                            button.textContent = "скопировать хэш";
                           }, 1000);
                         }}
                       >
@@ -121,9 +119,9 @@ export const App: FC = () => {
                         <div className="options">
                           <Popconfirm
                             placement="topLeft"
-                            title={secondText}
-                            description={secondDescription}
-                            onConfirm={() =>
+                            title={confirmText}
+                            description={confirmDescription}
+                            onConfirm={() => {
                               confirm({
                                 _id,
                                 hash,
@@ -131,39 +129,18 @@ export const App: FC = () => {
                                 answer,
                                 category,
                                 timeCreated,
-                              })
-                            }
-                            okText="Yes"
-                            cancelText="No"
+                              });
+                            }}
+                            okText="Да"
+                            cancelText="Нет"
                           >
-                            <button
-                              style={{ background: "transparent" }}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                              }}
-                            >
-                              <Popconfirm
-                                placement="bottomRight"
-                                title={firstText}
-                                description={firstDescription}
-                                // onConfirm={() => setOpenMainPop(true)}
-                                okText="Yes"
-                                cancelText="No"
-                              >
-                                <button
-                                  style={{ background: "transparent" }}
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                  }}
-                                >
-                                  <DeleteOutlined
-                                    style={{
-                                      fontSize: "24px",
-                                      color: "red",
-                                    }}
-                                  />
-                                </button>
-                              </Popconfirm>
+                            <button style={{ background: "transparent" }}>
+                              <DeleteOutlined
+                                style={{
+                                  fontSize: "24px",
+                                  color: "red",
+                                }}
+                              />
                             </button>
                           </Popconfirm>
                           <button
@@ -174,7 +151,7 @@ export const App: FC = () => {
                               setOldQuestion(question);
                               setOldAnswer(answer);
                               setOldCateg(category);
-                              setOldTimeCreated(timeCreated)
+                              setOldTimeCreated(timeCreated);
                               setCurrId(_id);
                             }}
                           >
@@ -223,9 +200,9 @@ export const App: FC = () => {
                             <div className="options">
                               <Popconfirm
                                 placement="topLeft"
-                                title={secondText}
-                                description={secondDescription}
-                                onConfirm={() =>
+                                title={confirmText}
+                                description={confirmDescription}
+                                onConfirm={() => {
                                   confirm({
                                     _id,
                                     hash,
@@ -233,39 +210,21 @@ export const App: FC = () => {
                                     answer,
                                     category,
                                     timeCreated,
-                                  })
-                                }
-                                okText="Yes"
-                                cancelText="No"
+                                  });
+                                }}
+                                okText="Да"
+                                cancelText="Нет"
                               >
                                 <button
                                   style={{ background: "transparent" }}
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                  }}
+                                  onClick={(e) => e.stopPropagation()}
                                 >
-                                  <Popconfirm
-                                    placement="bottomRight"
-                                    title={firstText}
-                                    description={firstDescription}
-                                    // onConfirm={() => setOpenMainPop(true)}
-                                    okText="Yes"
-                                    cancelText="No"
-                                  >
-                                    <button
-                                      style={{ background: "transparent" }}
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                      }}
-                                    >
-                                      <DeleteOutlined
-                                        style={{
-                                          fontSize: "24px",
-                                          color: "red",
-                                        }}
-                                      />
-                                    </button>
-                                  </Popconfirm>
+                                  <DeleteOutlined
+                                    style={{
+                                      fontSize: "24px",
+                                      color: "red",
+                                    }}
+                                  />
                                 </button>
                               </Popconfirm>
                               <button
