@@ -47,6 +47,7 @@
       display: flex;
       align-items: center;
       position: relative;
+      cursor: pointer;
       &:after {
         content: "";
         display: block;
