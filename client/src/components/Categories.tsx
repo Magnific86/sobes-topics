@@ -1,30 +1,23 @@
-import { useEffect } from "react";
-import { SwiperSlide, Swiper } from "swiper/react";
-import "swiper/css";
-import "swiper/css/free-mode";
-import "swiper/css/navigation";
-import { FreeMode, Navigation, Mousewheel } from "swiper";
-import { useWindowSize } from "../utils/hooks/useWindowSize";
-import { categories } from "../utils/staticArrs/categories";
-import { useAppContext } from "../context/MyContext";
-import axios from "axios";
-import { toast } from "react-toastify";
-import { useInView } from "react-intersection-observer";
+import { useEffect } from "react"
+import { SwiperSlide, Swiper } from "swiper/react"
+import "swiper/css"
+import "swiper/css/free-mode"
+import "swiper/css/navigation"
+import { FreeMode, Navigation, Mousewheel } from "swiper"
+import { useWindowSize } from "../utils/hooks/useWindowSize"
+import { categories } from "../utils/staticArrs/categories"
+import { useAppContext } from "../context/MyContext"
+import { useInView } from "react-intersection-observer"
 
 export const Categories = () => {
-  const { ref, inView } = useInView();
-  const { width: w } = useWindowSize();
-  const { getAllPosts, handleFilterPosts, setActiveCateg, activeCateg } =
-    useAppContext();
+  const { ref, inView } = useInView()
+  const { width: w } = useWindowSize()
+  const { getAllPosts, handleFilterPosts, setActiveCateg, activeCateg } = useAppContext()
 
   useEffect(() => {
-    const prev = document.getElementsByClassName(
-      "swiper-button-prev"
-    )[0] as HTMLElement;
-    inView
-      ? prev.setAttribute("style", "opacity:0")
-      : prev.setAttribute("style", "opcity:1");
-  }, [inView]);
+    const prev = document.getElementsByClassName("swiper-button-prev")[0] as HTMLElement
+    inView ? prev.setAttribute("style", "opacity:0") : prev.setAttribute("style", "opcity:1")
+  }, [inView])
 
   return (
     <Swiper
@@ -41,8 +34,8 @@ export const Categories = () => {
         <p
           className={activeCateg === "all" ? "activeCateg" : "eachCateg"}
           onClick={() => {
-            getAllPosts();
-            setActiveCateg("all");
+            getAllPosts()
+            setActiveCateg("all")
           }}
         >
           ALL
@@ -53,8 +46,8 @@ export const Categories = () => {
           <p
             className={activeCateg === value ? "activeCateg" : "eachCateg"}
             onClick={() => {
-              setActiveCateg(value);
-              handleFilterPosts(value);
+              setActiveCateg(value)
+              handleFilterPosts(value)
             }}
             ref={index === 0 ? ref : null}
           >
@@ -63,5 +56,5 @@ export const Categories = () => {
         </SwiperSlide>
       ))}
     </Swiper>
-  );
-};
+  )
+}

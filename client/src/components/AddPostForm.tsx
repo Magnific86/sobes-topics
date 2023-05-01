@@ -1,12 +1,12 @@
-import { FormEvent, useRef } from "react";
-import { Drawer } from "antd";
-import { useAppContext } from "../context/MyContext";
-import { toast } from "react-toastify";
-import axios from "axios";
-import { categories } from "../utils/staticArrs/categories";
-import sha256 from "sha256";
-import { useWindowSize } from "../utils/hooks/useWindowSize";
-import { getSignerFunc } from "../utils/web3Actions/getSignerFunc";
+import { FormEvent, useRef } from "react"
+import { Drawer } from "antd"
+import { useAppContext } from "../context/MyContext"
+import { toast } from "react-toastify"
+import axios from "axios"
+import { categories } from "../utils/staticArrs/categories"
+import sha256 from "sha256"
+import { useWindowSize } from "../utils/hooks/useWindowSize"
+import { getSignerFunc } from "../utils/web3Actions/getSignerFunc"
 
 export const AddPostForm = () => {
   const {
@@ -17,22 +17,22 @@ export const AddPostForm = () => {
     getAllPosts,
     activeCateg,
     handleFilterPosts,
-  } = useAppContext();
-  const questRef = useRef<HTMLInputElement>(null);
-  const answRef = useRef<HTMLTextAreaElement>(null);
-  const categRef = useRef<HTMLSelectElement>(null);
-  const errRef = useRef<HTMLSpanElement>(null);
-  const { width: w } = useWindowSize();
+  } = useAppContext()
+  const questRef = useRef<HTMLInputElement>(null)
+  const answRef = useRef<HTMLTextAreaElement>(null)
+  const categRef = useRef<HTMLSelectElement>(null)
+  const errRef = useRef<HTMLSpanElement>(null)
+  const { width: w } = useWindowSize()
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const question = questRef.current?.value;
-    const answer = answRef.current?.value;
-    const category = categRef.current?.value;
-    const timeCreated = String(new Date().toLocaleString());
+    e.preventDefault()
+    const question = questRef.current?.value
+    const answer = answRef.current?.value
+    const category = categRef.current?.value
+    const timeCreated = String(new Date().toLocaleString())
     if (question && answer && category) {
-      setButtonContent("posting...");
-      const hash = sha256(String(question + answer + category));
+      setButtonContent("posting...")
+      const hash = sha256(String(question + answer + category))
 
       const post = {
         hash: String(hash),
@@ -40,53 +40,41 @@ export const AddPostForm = () => {
         answer,
         category,
         timeCreated,
-      };
-      console.table({ "ready to post to server ": post });
+      }
+      console.table({ "ready to post to server ": post })
 
       try {
-        const { signedContract } = await getSignerFunc();
-        const tx = await signedContract.addPostHash(hash);
-        await tx.wait();
-        const res = await axios.post("http://localhost:5000/api/posts", post);
-        console.log("res.data", res.data);
-        toast.success("Пост успешно добавлен");
+        const { signedContract } = await getSignerFunc()
+        const tx = await signedContract.addPostHash(hash)
+        await tx.wait()
+        const res = await axios.post("http://localhost:5000/api/posts", post)
+        console.log("res.data", res.data)
+        toast.success("Пост успешно добавлен")
       } catch (e) {
-        toast.error("failed to post new post");
-        console.error(e);
+        toast.error("failed to post new post")
+        console.error(e)
       }
-      setButtonContent("post");
-      console.log("activeXateg in post form", activeCateg);
+      setButtonContent("post")
+      console.log("activeXateg in post form", activeCateg)
 
-      activeCateg === "all" ? getAllPosts() : handleFilterPosts(activeCateg);
-      answRef.current.value = "";
-      questRef.current.value = "";
-      categRef.current.value = "";
-      handleToggleDrawer();
+      activeCateg === "all" ? getAllPosts() : handleFilterPosts(activeCateg)
+      answRef.current.value = ""
+      questRef.current.value = ""
+      categRef.current.value = ""
+      handleToggleDrawer()
     } else {
-      errRef.current.setAttribute("style", "opacity:1");
-      !questRef.current.value &&
-        questRef.current.setAttribute("style", "border-bottom:2px solid red");
-      !answRef.current.value &&
-        answRef.current.setAttribute("style", "border-bottom:2px solid red");
-      !categRef.current.value &&
-        categRef.current.setAttribute("style", "border-bottom:2px solid red");
+      errRef.current.setAttribute("style", "opacity:1")
+      !questRef.current.value && questRef.current.setAttribute("style", "border-bottom:2px solid red")
+      !answRef.current.value && answRef.current.setAttribute("style", "border-bottom:2px solid red")
+      !categRef.current.value && categRef.current.setAttribute("style", "border-bottom:2px solid red")
       setTimeout(() => {
-        errRef.current.setAttribute("style", "opacity:0");
-        questRef.current.setAttribute(
-          "style",
-          "border-bottom:2px solid var(--black)"
-        );
-        answRef.current.setAttribute(
-          "style",
-          "border-bottom:2px solid var(--black)"
-        );
-        categRef.current.setAttribute(
-          "style",
-          "border-bottom:2px solid var(--black)"
-        );
-      }, 3000);
+        errRef.current.setAttribute("style", "opacity:0")
+        questRef.current.setAttribute("style", "border-bottom:2px solid var(--black)")
+        answRef.current.setAttribute("style", "border-bottom:2px solid var(--black)")
+        categRef.current.setAttribute("style", "border-bottom:2px solid var(--black)")
+      }, 3000)
     }
-  };
+  }
 
   return (
     <Drawer
@@ -104,10 +92,7 @@ export const AddPostForm = () => {
     >
       <div className="drawerContent">
         <div className="leftSideDrawer">
-          <h1>
-            Заполните поля вопроса и ответа, выберите категорию, и пост тут же
-            появится в списке
-          </h1>
+          <h1>Заполните поля вопроса и ответа, выберите категорию, и пост тут же появится в списке</h1>
         </div>
         <form className="addPostForm" onSubmit={(e) => handleSubmit(e)}>
           <span className="error-form" ref={errRef}>
@@ -129,5 +114,5 @@ export const AddPostForm = () => {
         </form>
       </div>
     </Drawer>
-  );
-};
+  )
+}
