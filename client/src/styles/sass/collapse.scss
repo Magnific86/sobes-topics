@@ -15,7 +15,7 @@
 
 .ant-drawer .ant-drawer-close {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   align-items: center;
   width: 100%;
   span {
@@ -50,10 +50,7 @@
   }
 }
 
-.ant-collapse-ghost
-  > .ant-collapse-item
-  > .ant-collapse-content
-  > .ant-collapse-content-box {
+.ant-collapse-ghost > .ant-collapse-item > .ant-collapse-content > .ant-collapse-content-box {
   .eachAnswer {
     display: flex;
     justify-content: center;
@@ -75,7 +72,7 @@
     .categAndTimeCreated {
       display: flex;
       width: 100%;
-      justify-content: end;
+      justify-content: flex-end;
       height: 10%;
       font-size: 12px;
     }
