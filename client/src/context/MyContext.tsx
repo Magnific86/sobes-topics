@@ -28,14 +28,6 @@ interface ContextState {
   handleToggleEditModal: () => void
   currId: string
   setCurrId: (state: string) => void
-  oldQuestion: string
-  setOldQuestion: (state: string) => void
-  oldAnswer: string
-  setOldAnswer: (state: string) => void
-  oldCateg: string
-  setOldCateg: (state: string) => void
-  oldTimeCreated: string
-  setOldTimeCreated: (state: string) => void
   activeCateg: string
   setActiveCateg: (state: string) => void
   serverError: boolean
@@ -57,10 +49,6 @@ export const MainProvider: FC<ChildrenProps> = ({ children }) => {
   const [isAdmin, setIsAdmin] = useState("disconnected")
   const [currId, setCurrId] = useState("")
   const [allPosts, setAllPosts] = useState()
-  const [oldQuestion, setOldQuestion] = useState("")
-  const [oldAnswer, setOldAnswer] = useState("")
-  const [oldCateg, setOldCateg] = useState("")
-  const [oldTimeCreated, setOldTimeCreated] = useState("")
   const [activeCateg, setActiveCateg] = useState("all")
   const [serverError, setServerError] = useState(false)
 
@@ -79,8 +67,6 @@ export const MainProvider: FC<ChildrenProps> = ({ children }) => {
     try {
       const data = await axios.get(`http://localhost:5000/api//posts/filtered/${category}`)
       setAllPosts(data.data.body)
-      // setActiveCateg(activeCateg === "all" ? "all" : category);
-      console.table("Post filtered successfully!", data.data)
     } catch (e) {
       console.error(e)
       toast.error(e?.message)
@@ -146,14 +132,6 @@ export const MainProvider: FC<ChildrenProps> = ({ children }) => {
         handleToggleEditModal,
         currId,
         setCurrId,
-        oldQuestion,
-        setOldQuestion,
-        oldAnswer,
-        setOldAnswer,
-        oldCateg,
-        setOldCateg,
-        oldTimeCreated,
-        setOldTimeCreated,
         activeCateg,
         setActiveCateg,
         serverError,

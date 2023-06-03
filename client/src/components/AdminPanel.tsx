@@ -3,8 +3,8 @@ import { Modal } from "antd"
 import OtpInput from "react-otp-input"
 import { useAppContext } from "../context/MyContext"
 import { toast } from "react-toastify"
-import { setSignerToAdmin } from "../utils/web3Actions/setSignerToAdmin"
-import { getSignerFunc } from "../utils/web3Actions/getSignerFunc"
+import { setSignerToAdmin } from "../utils/actions/setSignerToAdmin"
+import { getSignerFunc } from "../utils/actions/getSignerFunc"
 import { SECRET_PASS } from "../utils/staticArrs/secretPass"
 
 export const AdminPanel = () => {

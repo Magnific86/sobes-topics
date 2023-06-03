@@ -1,102 +1,74 @@
 import { Modal } from "antd"
-import axios from "axios"
 import { FC, FormEvent, ChangeEvent, useState, useEffect } from "react"
-import sha256 from "sha256"
 import { toast } from "react-toastify"
 import { useAppContext } from "../context/MyContext"
 import { categories } from "../utils/staticArrs/categories"
-import { getSignerFunc } from "../utils/web3Actions/getSignerFunc"
+import { IServerPost } from "../globalTypes"
+import { PostAction } from "../utils/actions/postAction"
 
-interface EditModalProps {
-  id: string
-  oldQuestion: string
-  oldAnswer: string
-  oldCateg: string
-  oldTimeCreated: string
-}
-
-export const EditModal: FC<EditModalProps> = ({ id, oldQuestion, oldAnswer, oldCateg, oldTimeCreated }) => {
-  const { openEditModal, handleToggleEditModal, getAllPosts, activeCateg, handleFilterPosts } = useAppContext()
+export const EditModal: FC = () => {
+  const { openEditModal, handleToggleEditModal, getAllPosts, activeCateg, handleFilterPosts, currId } = useAppContext()
   const [buttonContent, setButtonContent] = useState("edit")
-  const [question, setQuestion] = useState<string>(oldQuestion)
-  const [answer, setAnswer] = useState<string>(oldAnswer)
-  const [categ, setCateg] = useState<string>(oldCateg)
+
+  const [currentPost, setCurrentPost] = useState<IServerPost>({
+    _id: "",
+    question: "",
+    answer: "",
+    category: "",
+    timeCreated: "",
+    hash: "",
+  })
 
   useEffect(() => {
-    setAnswer(oldAnswer)
-    setQuestion(oldQuestion)
-    setCateg(oldCateg)
+    PostAction.getCurrentPost(currId)
+      .then(result => {
+        if (result.status === 200) {
+          setCurrentPost(result.data.body)
+        } else {
+          toast.error("Failed to get post")
+        }
+      })
+      .catch(() => {})
   }, [openEditModal])
 
-  const handleEditPost = async (e: FormEvent<HTMLFormElement>, id: string) => {
+  const onEditPostHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (answer.length <= 0 || question.length <= 0 || categ.length <= 0) {
-      toast.error("Не может ничего не быть))")
-      return
-    }
-
     setButtonContent("editing...")
-
-    if (!(answer === oldAnswer) || !(question === oldQuestion) || !(categ === oldCateg)) {
-      try {
-        const oldHash = sha256(String(oldQuestion + oldAnswer + oldCateg))
-        const hash = sha256(String(question + answer + categ))
-        console.log("hash", hash)
-
-        const editedPost = {
-          _id: id,
-          hash,
-          question,
-          answer,
-          category: categ,
-          timeCreated: oldTimeCreated + " " + String("Upd" + new Date().toLocaleString()),
-        }
-        console.log("new post", editedPost)
-
-        const { signedContract } = await getSignerFunc()
-        const tx = await signedContract.setNewPostHashAfterEdit(hash, oldHash)
-        console.log("tx before wait", tx)
-        await tx.wait()
-        console.log("tx after wait", tx)
-        const data = await axios.put("http://localhost:5000/api/posts", editedPost)
-        console.log(data.data)
-        toast.success("пост успешно редактирован")
-      } catch (e) {
-        console.error(e)
-        toast.error(e?.message)
+    PostAction.editCurrentPost(currentPost).then(result => {
+      if (result.status === 200) {
+        activeCateg === "all" ? getAllPosts() : handleFilterPosts(activeCateg)
+        setButtonContent("edit")
+        handleToggleEditModal()
+      } else {
+        toast.error("failed to edit post")
       }
-      activeCateg === "all" ? getAllPosts() : handleFilterPosts(activeCateg)
-      setButtonContent("edit")
-      handleToggleEditModal()
-    } else {
-      toast.error("Ничего не поменялось, запрос не отправлен...")
-      setButtonContent("edit")
-    }
+    })
   }
 
-  const handleQuestion = (e: ChangeEvent<HTMLInputElement>) => {
-    setQuestion(e.target.value)
-  }
-
-  const handleAnswer = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setAnswer(e.target.value)
-  }
-
-  const handleCateg = (e: ChangeEvent<HTMLSelectElement>) => {
-    setCateg(e.target.value)
+  const changeDataHandler = (
+    key: string,
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
+    const value: string = e.target.value
+    setCurrentPost({ ...currentPost, [key]: value })
   }
 
   return (
     <Modal centered open={openEditModal} onCancel={handleToggleEditModal} width={1000} footer={null}>
-      <form className="addPostForm" onSubmit={(e) => handleEditPost(e, id)}>
+      <form className="addPostForm" onSubmit={e => onEditPostHandler(e)}>
         <h1>Редактировать пост</h1>
         <label htmlFor="question">Вопрос</label>
-        <input type="text" name="question" value={question} onChange={(e) => handleQuestion(e)} />
+        <input
+          type="text"
+          name="question"
+          value={currentPost?.question}
+          onChange={e => changeDataHandler("question", e)}
+        />
         <label htmlFor="answer">Ответ</label>
-        <textarea name="answer" value={answer} onChange={(e) => handleAnswer(e)} />
-        <select value={categ} onChange={(e) => handleCateg(e)}>
+        <textarea name="answer" value={currentPost?.answer} onChange={e => changeDataHandler("answer", e)} />
+        <select value={currentPost?.category} onChange={e => changeDataHandler("category", e)}>
           <option value="">Категория</option>
-          {categories.map((el) => (
+          {categories.map(el => (
             <option key={el.value} value={el.value}>
               {el.title}
             </option>

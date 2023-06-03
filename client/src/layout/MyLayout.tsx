@@ -10,8 +10,6 @@ import { MyHeader } from "./MyHeader"
 import { MyFooter } from "./MyFooter"
 
 export const MyLayout: FC<LayoutProps> = ({ children }) => {
-  const { currId, oldQuestion, oldAnswer, oldCateg, oldTimeCreated } = useAppContext()
-
   return (
     <div className="container">
       <MyHeader />
@@ -21,13 +19,7 @@ export const MyLayout: FC<LayoutProps> = ({ children }) => {
       <FeedbackForm />
       <AboutDrawer />
       <AdminPanel />
-      <EditModal
-        id={currId}
-        oldQuestion={oldQuestion}
-        oldAnswer={oldAnswer}
-        oldCateg={oldCateg}
-        oldTimeCreated={oldTimeCreated}
-      />
+      <EditModal />
     </div>
   )
 }

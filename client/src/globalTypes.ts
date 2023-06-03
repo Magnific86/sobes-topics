@@ -21,3 +21,12 @@ export interface ISocial {
   icon: ReactNode
   url: string
 }
+
+export  interface IServerPost {
+  _id: string
+  question: string
+  answer: string
+  category: string
+  timeCreated: string
+  hash: string
+}

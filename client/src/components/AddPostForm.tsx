@@ -6,7 +6,7 @@ import axios from "axios"
 import { categories } from "../utils/staticArrs/categories"
 import sha256 from "sha256"
 import { useWindowSize } from "../utils/hooks/useWindowSize"
-import { getSignerFunc } from "../utils/web3Actions/getSignerFunc"
+import { getSignerFunc } from "../utils/actions/getSignerFunc"
 
 export const AddPostForm = () => {
   const {

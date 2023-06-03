@@ -5,7 +5,7 @@ import { InfoCircleOutlined } from "@ant-design/icons"
 import { useWindowSize } from "../utils/hooks/useWindowSize"
 import { useAppContext } from "../context/MyContext"
 import { toast } from "react-toastify"
-import { getSignerFunc } from "../utils/web3Actions/getSignerFunc"
+import { getSignerFunc } from "../utils/actions/getSignerFunc"
 
 export const MyHeader = () => {
   const { handleToggleDrawer, handleToggleModal, handleToggleInfoDrawer, handleToggleAdminPanel, isAdmin, setIsAdmin } =
@@ -20,7 +20,6 @@ export const MyHeader = () => {
       const boolIsAdmin = await signedContract.admins(signer.getAddress())
       setIsAdmin(String(boolIsAdmin))
       boolIsAdmin ? toast.success("Велком бэк") : toast.warn("Не админ")
-      console.log("boolIs admin", boolIsAdmin)
     } catch (e) {
       toast.error("Не удалось подключиться и проверить на админа")
     }

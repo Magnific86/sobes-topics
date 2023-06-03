@@ -1,6 +1,6 @@
 import { BrowserProvider, Contract } from "ethers";
 import { toast } from "react-toastify";
-import { abi, StorageAddress } from "./addressAndAbi";
+import { abi, StorageAddress } from "../staticArrs/addressAndAbi";
 
 export const getSignerFunc = async () => {
   try {
