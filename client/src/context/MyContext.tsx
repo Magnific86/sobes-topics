@@ -5,13 +5,10 @@ import { toast } from "react-toastify"
 
 interface ContextState {
   theme: string
-  setTheme: (state: string) => void
   handleToggleTheme: () => void
   openDrawer: boolean
-  setOpenDrawer: (state: boolean) => void
   handleToggleDrawer: () => void
   openModal: boolean
-  setOpenModal: (state: boolean) => void
   handleToggleModal: () => void
   buttonContent: string
   setButtonContent: (str: string) => void
@@ -109,14 +106,11 @@ export const MainProvider: FC<ChildrenProps> = ({ children }) => {
     <AppProvider
       value={{
         theme,
-        setTheme,
         handleToggleTheme,
         openDrawer,
-        setOpenDrawer,
         handleToggleDrawer,
         openModal,
         handleToggleModal,
-        setOpenModal,
         buttonContent,
         setButtonContent,
         isAdmin,
