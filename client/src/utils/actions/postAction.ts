@@ -4,7 +4,7 @@ import axios from "axios"
 import { toast } from "react-toastify"
 import { IPost, IServerPost } from "../../globalTypes"
 
-const baseUrl = "http://localhost:5000/api"
+const baseUrl = "/api"
 
 const getAllPosts = async () => {
   try {

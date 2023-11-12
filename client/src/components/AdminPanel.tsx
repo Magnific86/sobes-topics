@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState, FormEvent } from "react"
 import { Modal } from "antd"
-import OtpInput from "react-otp-input"
+// import OtpInput from "react-otp-input"
 import { useAppContext } from "../context/MyContext"
 import { toast } from "react-toastify"
 import { setSignerToAdmin } from "../utils/actions/setSignerToAdmin"
@@ -41,7 +41,7 @@ export const AdminPanel = () => {
           <p>(пароль: {SECRET_PASS})</p>
         </div>
         <form onSubmit={(e) => handleOtpSubmit(e)}>
-          <OtpInput
+          {/* <OtpInput
             ref={passRef}
             shouldAutoFocus={true}
             numInputs={4}
@@ -49,7 +49,7 @@ export const AdminPanel = () => {
             className="otp-input"
             value={otp}
             onChange={handleOtp}
-          />
+          /> */}
           <button>далее</button>
         </form>
       </div>

@@ -51,7 +51,7 @@ export const MainProvider: FC<ChildrenProps> = ({ children }) => {
 
   const getAllPosts = async () => {
     try {
-      const data = await axios.get(`http://localhost:5000/api/posts`)
+      const data = await axios.get(`/api/posts`)
       setAllPosts(data.data.body)
       setServerError(false)
     } catch (e) {
@@ -62,7 +62,7 @@ export const MainProvider: FC<ChildrenProps> = ({ children }) => {
 
   const handleFilterPosts = async (category: string) => {
     try {
-      const data = await axios.get(`http://localhost:5000/api//posts/filtered/${category}`)
+      const data = await axios.get(`/api/posts/filtered/${category}`)
       setAllPosts(data.data.body)
     } catch (e) {
       console.error(e)

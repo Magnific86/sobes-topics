@@ -47,7 +47,7 @@ export const AddPostForm = () => {
         const { signedContract } = await getSignerFunc()
         const tx = await signedContract.addPostHash(hash)
         await tx.wait()
-        const res = await axios.post("http://localhost:5000/api/posts", post)
+        const res = await axios.post("/api/posts", post)
         console.log("res.data", res.data)
         toast.success("Пост успешно добавлен")
       } catch (e) {
