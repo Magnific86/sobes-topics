@@ -3,8 +3,8 @@ import mongoose from "mongoose";
 import router from "./router.js";
 import cors from "cors";
 
-const port = process.env.PORT || 5000;
-const PORT = 5000;
+const port = process.env.PORT || 5430;
+const PORT = 5430;
 const MONGO_DB_URL =
   "mongodb+srv://username:simple-password@mycluster.7uy4jc6.mongodb.net/?retryWrites=true&w=majority";
 
