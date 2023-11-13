@@ -3,12 +3,13 @@ import { getSignerFunc } from "./getSignerFunc"
 import axios from "axios"
 import { toast } from "react-toastify"
 import { IPost, IServerPost } from "../../globalTypes"
+import { BASE_URL } from "../baseURL"
 
 const baseUrl = "/api"
 
 const getAllPosts = async () => {
   try {
-    return await axios.get(`${baseUrl}/posts`)
+    return await axios.get(`${BASE_URL}/api/posts`)
   } catch (e) {
     toast.error(e?.message)
     return e
@@ -17,7 +18,7 @@ const getAllPosts = async () => {
 
 const getCurrentPost = async (id: string) => {
   try {
-    return await axios.get(`${baseUrl}/posts/${id}`)
+    return await axios.get(`${BASE_URL}/api/posts/${id}`)
   } catch (e) {
     toast.error("failed to get post")
     return e
@@ -26,7 +27,7 @@ const getCurrentPost = async (id: string) => {
 
 const filterPosts = async (category: string) => {
   try {
-    return await axios.get(`${baseUrl}/posts/filtered/${category}`)
+    return await axios.get(`${BASE_URL}/api/posts/filtered/${category}`)
   } catch (e) {
     toast.error(e?.message)
     return e
@@ -55,7 +56,7 @@ const editCurrentPost = async ({ _id, question, answer, category, timeCreated, h
       const { signedContract } = await getSignerFunc()
       const tx = await signedContract.setNewPostHashAfterEdit(newHash, hash)
       await tx.wait()
-      const resp = await axios.put(`${baseUrl}/posts`, editedPost)
+      const resp = await axios.put(`${BASE_URL}/api/posts`, editedPost)
       toast.success("пост успешно редактирован")
       return resp
     } catch (e) {
@@ -73,7 +74,7 @@ const deleteCurrentPost = async (post: IPost, cbAfter: () => void) => {
     const { signedContract } = await getSignerFunc()
     const tx = await signedContract.deletePostHash(hash)
     await tx.wait()
-    const data = await axios.delete(`${baseUrl}/posts/${post._id}`)
+    const data = await axios.delete(`${BASE_URL}/api/posts/${post._id}`)
     console.log(data.data)
     toast.success("Пост успешно удален")
   } catch (e) {

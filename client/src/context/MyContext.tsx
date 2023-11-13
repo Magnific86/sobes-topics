@@ -2,6 +2,7 @@ import { createContext, FC, useState, useContext, useEffect } from "react"
 import { ChildrenProps, IPost } from "../globalTypes"
 import axios from "axios"
 import { toast } from "react-toastify"
+import { BASE_URL } from "../utils/baseURL"
 
 interface ContextState {
   theme: string
@@ -51,7 +52,7 @@ export const MainProvider: FC<ChildrenProps> = ({ children }) => {
 
   const getAllPosts = async () => {
     try {
-      const data = await axios.get(`/api/posts`)
+      const data = await axios.get(`${BASE_URL}/api/posts`)
       setAllPosts(data.data.body)
       setServerError(false)
     } catch (e) {
@@ -62,7 +63,7 @@ export const MainProvider: FC<ChildrenProps> = ({ children }) => {
 
   const handleFilterPosts = async (category: string) => {
     try {
-      const data = await axios.get(`/api/posts/filtered/${category}`)
+      const data = await axios.get(`${BASE_URL}/api/posts/filtered/${category}`)
       setAllPosts(data.data.body)
     } catch (e) {
       console.error(e)
